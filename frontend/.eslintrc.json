@@ -1,0 +1,53 @@
+{
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "airbnb",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint", "react"],
+    "rules": {
+      "arrow-body-style": ["error", "as-needed"],
+      "react/react-in-jsx-scope": "off",
+      "spaced-comment": "error",
+      "quotes": ["error", "single"],
+      "no-duplicate-imports": "error",
+      "react/jsx-filename-extension": [
+        1,
+        { "extensions": [".js", ".jsx", ".tsx", ".ts"] }
+      ],
+      "react/function-component-definition": [
+        2,
+        { "namedComponents": ["arrow-function", "function-declaration"] }
+      ],
+      "import/prefer-default-export": "off",
+      "import/extensions": ["off"],
+      "jsx-a11y/label-has-associated-control": [
+        2,
+        {
+          "labelAttributes": ["htmlFor"]
+        }
+      ]
+    },
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts", ".tsx", ".js"]
+      },
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        }
+      }
+    }
+  }
+  
