@@ -207,6 +207,11 @@ logs
 node_modules
 bower_components
 
+.env
+.env.development
+.env.production
+.env.test
+
 *.sublime*
 
 psd
