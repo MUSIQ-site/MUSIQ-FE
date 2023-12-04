@@ -26,7 +26,7 @@ export const LobbyUsersList: React.FC<LobbyUsersListProps> = ({
   const [users, setUsers] = useState<UserType[]>([]);
   const location = useLocation();
   const myNickname = window.localStorage.getItem('nickname');
-  const accessToken = window.localStorage.getItem('userAccessToken');
+  const accessToken = window.localStorage.getItem('UAT');
   const channelNumber = location.pathname.split('/').slice(-2)[0];
 
   const fetchUsers = async () => {
@@ -58,11 +58,16 @@ export const LobbyUsersList: React.FC<LobbyUsersListProps> = ({
       <UserCellWrapper>
         {users.map((user) => (
           <UserCell key={user.nickname}>
-          {user.nickname} {user.userLevel}Lv&nbsp; 
-          <span style={{ color: user.isGaming ? 'red' : 'green', fontSize: '10px' }}>
-            {user.isGaming ? '게임중' : '로비'}
-          </span>
-        </UserCell>
+            {user.nickname} {user.userLevel}Lv&nbsp;
+            <span
+              style={{
+                color: user.isGaming ? 'red' : 'green',
+                fontSize: '10px',
+              }}
+            >
+              {user.isGaming ? '게임중' : '로비'}
+            </span>
+          </UserCell>
         ))}
       </UserCellWrapper>
     </UsersListWrapper>

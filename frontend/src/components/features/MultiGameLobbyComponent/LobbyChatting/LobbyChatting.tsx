@@ -36,7 +36,7 @@ export const LobbyChatting = (props: OwnProps) => {
   const channelNo = location.pathname.split('/').slice(-2)[0];
   const myNickname = window.localStorage.getItem('nickname') || 'Unknown';
   const [lobbyInputMessage, setLobbyInputMessage] = useState<string>('');
-  const accessToken = window.localStorage.getItem('userAccessToken');
+  const accessToken = window.localStorage.getItem('UAT');
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = () => {
@@ -65,7 +65,8 @@ export const LobbyChatting = (props: OwnProps) => {
         <ChattingContent>
           {lobbyChatList.map((msg) => (
             <div key={msg.nickname} style={{ marginTop: '0.5%' }}>
-              <strong style={{ fontWeight: 'bold' }}>{msg.nickname}:</strong> {msg.message}
+              <strong style={{ fontWeight: 'bold' }}>{msg.nickname}:</strong>{' '}
+              {msg.message}
             </div>
           ))}
           <div ref={chatEndRef} />
@@ -84,7 +85,7 @@ export const LobbyChatting = (props: OwnProps) => {
           }}
         />
         <button type="button" onClick={sendMessage}>
-          <img src={messageSubmit} alt="메세지 보내기" width={27}/>
+          <img src={messageSubmit} alt="메세지 보내기" width={27} />
         </button>
       </ChattingInputWrapper>
     </ChattingWrapper>

@@ -43,14 +43,8 @@ export const Login = () => {
         password: pwRef.current,
       })
       .then((res) => {
-        window.localStorage.setItem(
-          'userAccessToken',
-          res.data.data.accessToken
-        );
-        window.localStorage.setItem(
-          'userRefreshToken',
-          res.data.data.refreshToken
-        );
+        window.localStorage.setItem('UAT', res.data.data.accessToken);
+        window.localStorage.setItem('URT', res.data.data.refreshToken);
         window.localStorage.setItem('nickname', res.data.data.nickname);
         setUserData({ nickname: res.data.data.nickname });
         setActiveCarouselNum({ activeCarouselNum: 0 });
