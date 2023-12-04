@@ -47,7 +47,7 @@ export const UserIpAtom = atom({
   },
 });
 
-const isLogin = Boolean(window.localStorage.getItem('userAccessToken'));
+const isLogin = Boolean(window.localStorage.getItem('UAT'));
 export const ActiveCarouselNumAtom = atom({
   key: 'ActiveCarouselNumAtom',
   default: {

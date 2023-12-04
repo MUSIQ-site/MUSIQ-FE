@@ -30,7 +30,7 @@ export const MultiGameLobbyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const channelNumber = location.pathname.split('/').slice(-2)[0];
-  const accessToken = window.localStorage.getItem('userAccessToken') ?? '';
+  const accessToken = window.localStorage.getItem('UAT') ?? '';
   const client = useRef<any>({});
   const [refreshKey, setRefreshKey] = useState(0);
   const [lobbyChatList, setLobbyChatList] = useState<

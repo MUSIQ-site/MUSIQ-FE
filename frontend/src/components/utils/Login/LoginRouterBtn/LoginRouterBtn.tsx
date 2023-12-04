@@ -72,8 +72,8 @@ export const LoginRouterBtn = (props: OwnProps) => {
       userApis
         .delete(`${process.env.REACT_APP_BASE_URL}/member/logout`)
         .then((res) => {
-          window.localStorage.removeItem('userAccessToken');
-          window.localStorage.removeItem('userRefreshToken');
+          window.localStorage.removeItem('UAT');
+          window.localStorage.removeItem('URT');
           window.localStorage.removeItem('nickname');
           setActiveCarouselNum({ activeCarouselNum: 1 });
           alert('로그아웃 성공!');
