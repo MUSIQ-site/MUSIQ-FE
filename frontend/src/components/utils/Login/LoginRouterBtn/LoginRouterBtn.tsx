@@ -80,7 +80,11 @@ export const LoginRouterBtn = (props: OwnProps) => {
           navigate('/');
         })
         .catch((err) => {
-          alert('로그아웃 실패!');
+          window.localStorage.removeItem('UAT');
+          window.localStorage.removeItem('URT');
+          window.localStorage.removeItem('nickname');
+          alert('로그아웃 성공!');
+          navigate('/');
         });
     } else {
       navigate('/login');
