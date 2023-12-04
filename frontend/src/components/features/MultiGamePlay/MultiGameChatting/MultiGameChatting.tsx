@@ -25,7 +25,7 @@ type OwnProps = {
 export const MultiGameChatting = (props: OwnProps) => {
   const { userLength, skipVote, gameChatList, socketClient, setGameChatList } =
     props;
-  const accessToken = window.localStorage.getItem('userAccessToken');
+  const accessToken = window.localStorage.getItem('UAT');
   const location = useLocation();
   const focusRef = useRef<HTMLInputElement>(null);
   const inputTextRef = useRef<string>('');

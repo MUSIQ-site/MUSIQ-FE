@@ -30,7 +30,7 @@ const ButtonStyle = styled.div`
 
 export const MultiGameStart = (props: OwnProps) => {
   const { socketClient } = props;
-  const accessToken = window.localStorage.getItem('userAccessToken');
+  const accessToken = window.localStorage.getItem('UAT');
   const location = useLocation();
 
   const sendGameStart = () => {

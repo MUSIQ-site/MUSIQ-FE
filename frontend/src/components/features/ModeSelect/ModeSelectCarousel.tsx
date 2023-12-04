@@ -34,13 +34,13 @@ export const ModeSelectCarousel: React.FC = () => {
   );
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    Boolean(window.localStorage.getItem('userAccessToken'))
+    Boolean(window.localStorage.getItem('UAT'))
   ); // 로그인 검증
   const [visible, setVisible] = useState<number>(
     activeCarouselNum.activeCarouselNum
   ); // accessToken이 없을 때 visible의 초기값을 1로 설정하여 2번 콘텐츠가 먼저 보이게 함
   useEffect(() => {
-    setIsLoggedIn(Boolean(window.localStorage.getItem('userAccessToken')));
+    setIsLoggedIn(Boolean(window.localStorage.getItem('UAT')));
   }, [activeCarouselNum.activeCarouselNum]);
 
   const [showDescription, setShowDescription] = useState<number | null>(null); // 설명을 보여줄 아이템의 인덱스
@@ -81,13 +81,13 @@ export const ModeSelectCarousel: React.FC = () => {
   const navigateToLink = () => {
     const content = contents[visible];
 
-    if (content.id === 1 && window.localStorage.getItem('userAccessToken')) {
+    if (content.id === 1 && window.localStorage.getItem('UAT')) {
       alert('비회원만 이용할 수 있는 서비스입니다.');
       return; // navigation을 수행하지 않고 함수를 종료
     }
 
     if (
-      !window.localStorage.getItem('userAccessToken') &&
+      !window.localStorage.getItem('UAT') &&
       (content.id === 2 || content.id === 3 || content.id === 5)
     ) {
       alert('로그인이 필요한 서비스입니다.');

@@ -6,7 +6,7 @@ import muteButton from '../../../assets/svgs/bgmController/muteButton.svg';
 import { LoginRouterBtn } from '../Login';
 
 export const BgmBtn = () => {
-  const isLogin = Boolean(window.localStorage.getItem('userAccessToken'));
+  const isLogin = Boolean(window.localStorage.getItem('UAT'));
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [time, setTime] = useState<number>(3);

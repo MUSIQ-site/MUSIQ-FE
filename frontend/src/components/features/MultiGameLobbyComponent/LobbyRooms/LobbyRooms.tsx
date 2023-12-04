@@ -130,7 +130,7 @@ export const LobbyRooms = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const channelNumber = location.pathname.split('/').slice(-2)[0];
-  const accessToken = window.localStorage.getItem('userAccessToken');
+  const accessToken = window.localStorage.getItem('UAT');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoomNumber, setSelectedRoomNumber] = useState(null);
 
