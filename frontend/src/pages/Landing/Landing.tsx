@@ -16,7 +16,7 @@ export const Landing = () => {
     ActiveCarouselNumAtom
   );
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    Boolean(window.localStorage.getItem('userAccessToken'))
+    Boolean(window.localStorage.getItem('UAT'))
   ); // 로그인 검증
   const navigate = useNavigate();
 

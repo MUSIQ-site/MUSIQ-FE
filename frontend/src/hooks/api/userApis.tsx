@@ -10,7 +10,7 @@ export const userApis = axios.create({
 // 액세스토큰 재발급받는 함수
 async function postRefreshToken() {
   try {
-    const refreshToken = window.localStorage.getItem('userRefreshToken');
+    const refreshToken = window.localStorage.getItem('URT');
     const { data } = await axios.post(
       `${process.env.REACT_APP_BASE_URL}/member/token`,
       {},
@@ -42,14 +42,14 @@ userApis.interceptors.request.use(
   (config: any) => {
     // 요청을 보내기 전에 수행할 일
     // localstorage에 저장한 액세스토큰 가져오기
-    const userAccessToken = window.localStorage.getItem('userAccessToken');
+    const UAT = window.localStorage.getItem('UAT');
 
     // 엑세스토큰이 없다면 로그인으로 라우팅, 있다면 header에 넣어주기
-    if (!userAccessToken) {
+    if (!UAT) {
       window.location.href = '/login';
       return;
     }
-    config.headers.accessToken = `${userAccessToken}`;
+    config.headers.accessToken = `${UAT}`;
 
     return config;
   },
@@ -70,11 +70,8 @@ userApis.interceptors.response.use(
 
       // response에 담긴 accessToken, refreshToken을 다시 저장한다
       if (response) {
-        window.localStorage.setItem('userAccessToken', response.newAccessToken);
-        window.localStorage.setItem(
-          'userRefreshToken',
-          response.newRefreshToken
-        );
+        window.localStorage.setItem('UAT', response.newAccessToken);
+        window.localStorage.setItem('URT', response.newRefreshToken);
         // 원래 api 요청의 headers의 accessToken변경
         err.config.headers.accessToken = response.newAccessToken;
         // 원래 요청을 다시 날려준다!
@@ -82,14 +79,14 @@ userApis.interceptors.response.use(
         return originalResponse; // 원래 api 요청의 response return
       }
       // 리프레시 토큰도 만료되었다면 login페이지로 이동
-      window.localStorage.removeItem('userAccessToken');
-      window.localStorage.removeItem('userRefreshToken');
+      window.localStorage.removeItem('UAT');
+      window.localStorage.removeItem('URT');
       window.localStorage.removeItem('nickname');
       window.location.href = '/login';
       // 리프레쉬토큰 유효하지 않을때 로그인으로 라우팅
     } else if (err.response.data.code === 1051) {
-      window.localStorage.removeItem('userAccessToken');
-      window.localStorage.removeItem('userRefreshToken');
+      window.localStorage.removeItem('UAT');
+      window.localStorage.removeItem('URT');
       window.localStorage.removeItem('nickname');
       window.location.href = '/login';
     }

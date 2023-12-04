@@ -66,7 +66,7 @@ const Router = () => {
     !location.pathname.includes('/game-play') &&
     !location.pathname.includes('/lobby') &&
     !location.pathname.includes('/game');
-  const userAccessToken = window.localStorage.getItem('userAccessToken');
+  const UAT = window.localStorage.getItem('UAT');
   const [userIpAtom, setUserIpAtom] = useRecoilState(UserIpAtom);
 
   useEffect(() => {
@@ -91,10 +91,7 @@ const Router = () => {
             key={item.path}
             path={item.path}
             element={
-              <PrivateRoute
-                component={item.component}
-                authenticated={userAccessToken}
-              />
+              <PrivateRoute component={item.component} authenticated={UAT} />
             }
           />
         ))}
@@ -105,7 +102,7 @@ const Router = () => {
             path={item.path}
             element={
               <PublicRoute
-                authenticated={!userAccessToken}
+                authenticated={!UAT}
                 restricted={item.restricted}
                 component={item.component}
               />

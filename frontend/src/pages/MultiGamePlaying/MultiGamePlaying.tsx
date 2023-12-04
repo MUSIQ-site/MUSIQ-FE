@@ -43,7 +43,7 @@ type ResultUser = {
 export const MultiGamePlaying = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const accessToken = window.localStorage.getItem('userAccessToken') ?? '';
+  const accessToken = window.localStorage.getItem('UAT') ?? '';
   const [isToggled, setIsToggled] = useState<boolean>(false); // 모달 창 toggle
   const isOutButtonClickRef = useRef<boolean>(false);
   const client = useRef<any>({}); // 게임 소켓 클라이언트
