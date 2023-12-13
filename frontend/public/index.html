@@ -39,10 +39,40 @@
     />
     <title>MUSIQ - 노래 빨리 맞추기 게임</title>
   </head>
-  <body>
-    <noscript
-      >필요한 데이터가 모두 존재하지 않습니다. 다시 접근해주세요</noscript
-    >
+  <body
+    oncontextmenu="return false"
+    ondragstart="return false"
+    onselectstart="return false"
+  >
     <div id="root"></div>
+    <script>
+      // 키보드로 개발자모드 막기(윈도우, 맥 단축키 모두 고려)
+      window.addEventListener('keydown', function (e) {
+        if (
+          // CMD + Alt + I (Chrome, Firefox, Safari)
+          (e.metaKey == true && e.altKey == true && e.keyCode == 73) ||
+          // CMD + Alt + J (Chrome)
+          (e.metaKey == true && e.altKey == true && e.keyCode == 74) ||
+          // CMD + Alt + C (Chrome)
+          (e.metaKey == true && e.altKey == true && e.keyCode == 67) ||
+          // CMD + Shift + C (Chrome)
+          (e.metaKey == true && e.shiftKey == true && e.keyCode == 67) ||
+          // Ctrl + Shift + I (Chrome, Firefox, Safari, Edge)
+          (e.ctrlKey == true && e.shiftKey == true && e.keyCode == 73) ||
+          // Ctrl + Shift + J (Chrome, Edge)
+          (e.ctrlKey == true && e.shiftKey == true && e.keyCode == 74) ||
+          // Ctrl + Shift + C (Chrome, Edge)
+          (e.ctrlKey == true && e.shiftKey == true && e.keyCode == 67) ||
+          // F12 (Chrome, Firefox, Edge)
+          e.keyCode == 123 ||
+          // CMD + Alt + U, Ctrl + U (View source: Chrome, Firefox, Safari, Edge)
+          (e.metaKey == true && e.altKey == true && e.keyCode == 85) ||
+          (e.ctrlKey == true && e.keyCode == 85)
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    </script>
   </body>
 </html>
