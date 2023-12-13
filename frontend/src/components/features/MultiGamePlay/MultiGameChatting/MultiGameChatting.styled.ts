@@ -63,7 +63,7 @@ export const ChatListContainer = styled.div`
     align-items: flex-start;
 
     & .nickname {
-      text-align: right;
+      text-align: center;
       width: 12%;
     }
 
