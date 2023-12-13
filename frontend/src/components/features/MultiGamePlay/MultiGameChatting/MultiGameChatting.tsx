@@ -115,6 +115,7 @@ export const MultiGameChatting = (props: OwnProps) => {
           className="gameChatInput"
           placeholder="엔터키로 활성화 후 채팅 입력"
           value={inputText}
+          maxLength={100}
           ref={focusRef}
           onChange={(e) => {
             setInputText(e.target.value);
