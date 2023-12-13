@@ -99,7 +99,7 @@ export const MultiGameChatting = (props: OwnProps) => {
             className="chatMessage"
             nickname={chat.nickname}
           >
-            <div className="nickname">{chat.nickname} : </div>
+            <div className="nickname">{chat.nickname}</div>
             <div className="message">{chat.message}</div>
           </S.NicknameColor>
         ))}
