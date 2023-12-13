@@ -60,10 +60,16 @@ export const ChatListContainer = styled.div`
   & .chatMessage {
     color: #fff;
     display: flex;
-    gap: 0.6rem;
+    align-items: flex-start;
 
     & .nickname {
-      text-align: center;
+      text-align: right;
+      width: 12%;
+    }
+
+    & .message {
+      padding-left: 1%;
+      width: 86%;
     }
   }
 `;
