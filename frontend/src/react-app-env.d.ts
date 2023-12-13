@@ -7,5 +7,6 @@ declare namespace NodeJS {
     REACT_APP_JAVASCRIPT_KEY: string;
     REACT_APP_SOCKET_URL: string;
     REACT_APP_SHARE_URL: string;
+    GENERATE_SOURCEMAP: boolean;
   }
 }
