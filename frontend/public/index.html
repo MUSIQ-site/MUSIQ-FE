@@ -46,8 +46,33 @@
   >
     <div id="root"></div>
     <script>
+      // 콘솔 삭제 후 가장 위에 띄우기
+      setTimeout(() => {
+        console.clear();
+      }, 0);
+
+      let cssRule = 'font-size:2em; font-family:Nanum Gothic';
+      let cssLogo1 =
+        'color:#FF2C2C;' +
+        'font-size: 80px;' +
+        '-webkit-text-stroke: 3px black;' +
+        'font-weight: bold;' +
+        'letter-space:-1px;' +
+        'font-family:Tahoma,Arial,sans-serif';
+      if (window.console != undefined) {
+        setTimeout(console.log.bind(console, '%c잠깐만요!', cssLogo1), 50);
+        setTimeout(
+          console.log.bind(
+            console,
+            '%c무슨일로 여기에 오신건진 모르겠지만, 이곳은 개발자용으로 브라우저에서 기본적으로 제공되는 기능입니다. 이곳에 무언가를 복사/붙여넣기 하라고 했다면 사기 행위로 간주하세요. 이 공간을 통해 유저분의 계정 권한을 넘길 수도 있습니다.',
+            cssRule
+          ),
+          50
+        );
+      }
+      //devdavelee.tistory.com/144 [DonggiLee:티스토리]
       // 키보드로 개발자모드 막기(윈도우, 맥 단축키 모두 고려)
-      window.addEventListener('keydown', function (e) {
+      출처: https: window.addEventListener('keydown', function (e) {
         if (
           // CMD + Alt + I (Chrome, Firefox, Safari)
           (e.metaKey == true && e.altKey == true && e.keyCode == 73) ||
