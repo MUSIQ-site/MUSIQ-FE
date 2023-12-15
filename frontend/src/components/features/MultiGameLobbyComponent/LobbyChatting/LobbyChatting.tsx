@@ -76,11 +76,16 @@ export const LobbyChatting = (props: OwnProps) => {
         <StyledInput
           type="text"
           placeholder="메시지를 입력하세요..."
-          value={lobbyInputMessage} // 입력 필드 값 상태와 바인딩
-          onChange={(e) => setLobbyInputMessage(e.target.value)} // 입력 값이 변경될 때마다 상태 업데이트
+          value={lobbyInputMessage}
+          onChange={(e) => {
+            // 채팅 글자 수 제한
+            if (e.target.value.length <= 100) {
+              setLobbyInputMessage(e.target.value);
+            }
+          }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              sendMessage(); // 엔터를 누를 때 메시지 보내기
+              sendMessage();
             }
           }}
         />
