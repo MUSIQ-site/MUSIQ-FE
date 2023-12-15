@@ -38,6 +38,8 @@ export const LobbyChatting = (props: OwnProps) => {
   const [lobbyInputMessage, setLobbyInputMessage] = useState<string>('');
   const accessToken = window.localStorage.getItem('UAT');
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const [chatCount, setChatCount] = useState(0);
+  const [chatDisabled, setChatDisabled] = useState(false); // 도배 방지를 위한 상태 변수
 
   const sendMessage = () => {
     const headers: { [key: string]: string } = {};
@@ -53,6 +55,18 @@ export const LobbyChatting = (props: OwnProps) => {
       }),
     });
     setLobbyInputMessage(''); // 채팅 보내고 입력창 비우기
+
+    // 채팅 도배 방지 로직
+    setChatCount(chatCount + 1);
+
+    // 연속 3번의 메시지를 보낸 경우
+    if (chatCount >= 4) {
+      setChatDisabled(true);
+      setTimeout(() => {
+        setChatDisabled(false);
+        setChatCount(0);
+      }, 3000); // 3초 후 채팅 활성화 및 카운트 초기화
+    }
   };
 
   useEffect(() => {
@@ -75,19 +89,24 @@ export const LobbyChatting = (props: OwnProps) => {
       <ChattingInputWrapper>
         <StyledInput
           type="text"
-          placeholder="메시지를 입력하세요..."
+          placeholder={
+            chatDisabled
+              ? '잠시 후 다시 시도해주세요'
+              : '메시지를 입력하세요...'
+          }
           value={lobbyInputMessage}
           onChange={(e) => {
-            // 채팅 글자 수 제한
-            if (e.target.value.length <= 100) {
+            // 채팅 글자 수 제한 및 채팅 비활성화 상태 확인
+            if (e.target.value.length <= 100 && !chatDisabled) {
               setLobbyInputMessage(e.target.value);
             }
           }}
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !chatDisabled) {
               sendMessage();
             }
           }}
+          disabled={chatDisabled}
         />
         <button type="button" onClick={sendMessage}>
           <img src={messageSubmit} alt="메세지 보내기" width={27} />
