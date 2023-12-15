@@ -40,6 +40,23 @@ export const LobbyChatting = (props: OwnProps) => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [chatCount, setChatCount] = useState(0);
   const [chatDisabled, setChatDisabled] = useState(false); // 도배 방지를 위한 상태 변수
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && inputRef.current && !chatDisabled) {
+        inputRef.current.focus(); // 엔터키가 눌렸을 때 입력 필드에 포커스
+      }
+    };
+
+    // 키보드 이벤트 리스너 등록
+    window.addEventListener('keydown', handleKeyPress);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [chatDisabled]); // 의존성 배열에 chatDisabled 추가
 
   const sendMessage = () => {
     const headers: { [key: string]: string } = {};
@@ -89,6 +106,7 @@ export const LobbyChatting = (props: OwnProps) => {
       <ChattingInputWrapper>
         <StyledInput
           type="text"
+          ref={inputRef}
           placeholder={
             chatDisabled
               ? '잠시 후 다시 시도해주세요'
