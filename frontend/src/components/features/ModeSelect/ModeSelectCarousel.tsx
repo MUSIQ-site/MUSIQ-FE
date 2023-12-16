@@ -71,12 +71,6 @@ export const ModeSelectCarousel: React.FC = () => {
       image: ranking,
       link: '/ranking',
     },
-    {
-      id: 5,
-      text: '온 가족이 즐길 수 있는 모드입니다. 손을 들고 정답을 외쳐보세요!',
-      image: isLoggedIn ? mzModeChar : mzLock,
-      link: '/mz-mode',
-    },
   ]);
   const navigateToLink = () => {
     const content = contents[visible];

@@ -8,6 +8,6 @@ export * from './Login';
 export * from './RankingPage';
 export * from './Signup';
 export * from './MultiGameLobby';
-export * from './MzModePage';
+export * from './PageNotFoundError';
 export * from './MultiChannelPage';
 export * from './MultiGamePlaying';

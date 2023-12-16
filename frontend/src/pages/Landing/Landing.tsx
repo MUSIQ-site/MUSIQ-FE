@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import { ActiveCarouselNumAtom } from '../../atoms/atoms';
 import * as S from './Landing.styled';
-import { Logo } from '../../components/utils';
+import { Logo, BgmBtn } from '../../components/utils';
 import {
   FadeInFromBottom,
   Blink,

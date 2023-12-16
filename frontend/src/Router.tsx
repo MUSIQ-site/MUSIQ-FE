@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { UserIpAtom } from './atoms/atoms';
 import PrivateRoute from './hooks/PrivateRoute';
 import PublicRoute from './hooks/PublicRoute';
-import { BgmBtn } from './components/utils/BgmBtn';
+import { BgmBtn } from './components/utils';
 import {
   Landing,
   ModeSelectPage,
@@ -19,7 +19,7 @@ import {
   Login,
   RankingPage,
   Signup,
-  MzModePage,
+  PageNotFoundError,
   MultiChannelPage,
   MultiGameLobbyPage,
   MultiGamePlaying,
@@ -57,7 +57,7 @@ const PublicPath = [
   { path: '/select-mode', component: <ModeSelectPage />, restricted: false },
   { path: '/ranking', component: <RankingPage />, restricted: false },
   { path: '/mobile-restriction', component: <MobilePage />, restricted: false },
-  { path: '/mz-mode', component: <MzModePage /> },
+  { path: '/*', component: <PageNotFoundError /> },
 ];
 
 const Router = () => {
@@ -110,7 +110,7 @@ const Router = () => {
           />
         ))}
       </Routes>
-      {isMusicRoute && <BgmBtn key={1} />}
+      {isMusicRoute && <BgmBtn />}
     </AnimatePresence>
   );
 };

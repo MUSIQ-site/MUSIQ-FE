@@ -207,6 +207,7 @@ export const GuestGameOption = () => {
                 levelLists={levelLists}
                 handleClickRadioButton={handleClickRadioButton}
                 levelList={levelList}
+                key="level"
               />
               <SelectYearBtn
                 checkedList={checkedList}
@@ -215,6 +216,7 @@ export const GuestGameOption = () => {
                 setIsChecked={setIsChecked}
                 checkedItemHandler={checkedItemHandler}
                 checkHandler={checkHandler}
+                key="check"
               />
             </S.ContentContainer>
           </S.OptionContainer>
