@@ -18,6 +18,8 @@ import {
   StyledYearLabel,
   StyledIsPrivateRoomCheckBoxDiv,
   ModalOverlay,
+  SelectMaxUserNumberWrapper,
+  StyledNumberInput,
 } from './LobbyCreateRoomButton.styled';
 import exitButtonIcon from '../../../../assets/svgs/MultiLobby/exitButtonIcon.svg';
 import musiqLogo from '../../../../assets/svgs/logo.svg';
@@ -29,7 +31,8 @@ interface CreateRoomModalProps {
     roomName: string,
     password: string,
     musicYear: string,
-    quizAmount: number
+    quizAmount: number,
+    maxUserNumber: number
   ) => void;
 }
 
@@ -58,6 +61,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
     '2022',
     '2023',
   ];
+  const [maxUserNumber, setMaxUserNumber] = useState('');
 
   // 비공개 여부 체크박스 상태 변경 핸들러
   const handlePrivateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +91,13 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
   // 방 생성 핸들러
   const handleCreateRoom = () => {
     // 입력 검증 로직
+
+    const maxUsers = parseInt(maxUserNumber, 10);
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(maxUsers) || maxUsers < 1 || maxUsers > 10) {
+      alert('최대 인원 수는 1~10 사이의 숫자여야 합니다.');
+      return;
+    }
     if (roomName.trim() === '') {
       alert('방 제목을 입력해주세요.');
       return;
@@ -99,10 +110,14 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
 
     if (quizAmount === 0) {
       alert('문제 개수를 선택해주세요.');
-      // eslint-disable-next-line no-useless-return
       return;
     }
-    onCreate(roomName, password, musicYear.join(' '), quizAmount);
+
+    if (maxUsers === 0) {
+      alert('최대 인원 수를 선택해주세요.');
+      return;
+    }
+    onCreate(roomName, password, musicYear.join(' '), quizAmount, maxUsers);
   };
 
   if (!isOpen) {
@@ -206,6 +221,17 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
             </StyledAmountLabel>
           ))}
         </SelectQuizAmoutWrapper>
+        <SelectMaxUserNumberWrapper>
+          <div style={{ fontSize: '18px' }}>최대 인원 수를 입력해주세요</div>
+          <StyledNumberInput
+            type="number"
+            value={maxUserNumber}
+            onChange={(e) => setMaxUserNumber(e.target.value)}
+            min="1"
+            max="10"
+            placeholder="1~10"
+          />
+        </SelectMaxUserNumberWrapper>
         <StyledCreateRoomButton type="button" onClick={handleCreateRoom}>
           방 만들기
         </StyledCreateRoomButton>
@@ -240,7 +266,8 @@ export const LobbyCreateRoomButton = () => {
     roomName: string,
     password: string,
     musicYear: string,
-    quizAmount: number
+    quizAmount: number,
+    maxUserNumber: number
   ) => {
     const requestBody = {
       channelNo: parseInt(channelNo, 10),
@@ -248,6 +275,7 @@ export const LobbyCreateRoomButton = () => {
       password,
       musicYear,
       quizAmount,
+      maxUserNumber,
     };
     userApis
       .post(`${process.env.REACT_APP_BASE_URL}/game/main/create`, requestBody)
