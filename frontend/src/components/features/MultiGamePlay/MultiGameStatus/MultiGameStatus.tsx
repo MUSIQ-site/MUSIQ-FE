@@ -7,7 +7,6 @@ const Container = styled.div`
   top: 3%;
   left: 3%;
   width: 16rem;
-  height: 15rem;
   border-radius: 16px;
   border: 5px solid rgba(235, 226, 255, 0.6);
   background-color: rgba(235, 226, 255, 0.6);
@@ -15,7 +14,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding-top: 14px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
   & h1 {
     font-family: 'Galmuri11', 'sans-serif';
