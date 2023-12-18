@@ -89,6 +89,18 @@ export const SelectQuizAmoutWrapper = styled.div`
   width: 20vw;
 `;
 
+export const SelectMaxUserNumberWrapper = styled.div`
+  display: block;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+  border: 5px solid rgba(235, 226, 255, 0.4);
+  border-radius: 8px;
+  margin-top: 1%;
+  padding: 1%;
+  width: 20vw;
+`;
+
 export const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
   transform: scale(2);
 `;
@@ -127,5 +139,22 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5); // 반투명 배경 설정
-  z-index: 1000; 
+  z-index: 1000;
+`;
+
+export const StyledNumberInput = styled.input`
+  font-size: 20px;
+  padding: 10px;
+  margin: 6px;
+  width: 5vw;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  &:hover {
+    border-color: #888;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #555;
+  }
 `;
