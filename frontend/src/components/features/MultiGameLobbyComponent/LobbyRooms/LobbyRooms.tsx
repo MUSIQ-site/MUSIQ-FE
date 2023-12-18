@@ -40,6 +40,7 @@ interface Room {
   years: number[];
   quizAmount: number;
   isPlay: boolean;
+  maxUserNumber: number;
 }
 
 interface PasswordModalProps {
@@ -198,7 +199,9 @@ export const LobbyRooms = () => {
             musicYear: room.years,
             quizAmount: room.quizAmount,
             data: userInfoResponse.data.data,
+            maxUserNumber: room.maxUserNumber,
           };
+
           navigate(`/multi/${channelNumber}/game/${room.gameRoomNo}`, {
             state: { requestBody },
           });
@@ -247,10 +250,13 @@ export const LobbyRooms = () => {
             <RoomYearsDiv>{getYearsRange(room.years)}</RoomYearsDiv>
             <RoomPeopleDiv
               style={{
-                color: room.currentMembers === 6 ? 'red' : 'inherit',
+                color:
+                  room.currentMembers === room.maxUserNumber
+                    ? 'red'
+                    : 'inherit',
               }}
             >
-              {room.currentMembers}/6
+              {room.currentMembers}/{room.maxUserNumber}
             </RoomPeopleDiv>
             <IsPrivateimg
               src={room.isPrivate ? roomLockIcon : roomUnlockIcon}
