@@ -61,7 +61,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
     '2022',
     '2023',
   ];
-  const [maxUserNumber, setMaxUserNumber] = useState('');
+  const [maxUserNumber, setMaxUserNumber] = useState('6');
 
   // 비공개 여부 체크박스 상태 변경 핸들러
   const handlePrivateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,10 +113,10 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
       return;
     }
 
-    if (maxUsers === 0) {
-      alert('최대 인원 수를 선택해주세요.');
-      return;
-    }
+    // if (maxUsers === 0) {
+    //   alert('최대 인원 수를 선택해주세요.');
+    //   return;
+    // }
     onCreate(roomName, password, musicYear.join(' '), quizAmount, maxUsers);
   };
 
@@ -221,7 +221,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
             </StyledAmountLabel>
           ))}
         </SelectQuizAmoutWrapper>
-        <SelectMaxUserNumberWrapper>
+        {/* <SelectMaxUserNumberWrapper>
           <div style={{ fontSize: '18px' }}>최대 인원 수를 입력해주세요</div>
           <StyledNumberInput
             type="number"
@@ -231,7 +231,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
             max="10"
             placeholder="1~10"
           />
-        </SelectMaxUserNumberWrapper>
+        </SelectMaxUserNumberWrapper> */}
         <StyledCreateRoomButton type="button" onClick={handleCreateRoom}>
           방 만들기
         </StyledCreateRoomButton>
