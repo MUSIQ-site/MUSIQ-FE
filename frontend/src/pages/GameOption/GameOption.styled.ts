@@ -40,6 +40,7 @@ export const TitleContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-width: max-content;
+  color: #fff;
 
   & li {
     text-align: left;
