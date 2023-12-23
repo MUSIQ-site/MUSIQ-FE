@@ -1,6 +1,6 @@
 {
   "name": "MusiQ",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": true,
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
