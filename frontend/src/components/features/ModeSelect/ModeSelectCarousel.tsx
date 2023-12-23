@@ -16,11 +16,9 @@ import EnterButton from '../../../assets/svgs/modeSelectSvgs/Enter.svg';
 import singleModeChar from '../../../assets/img/modeSelect/singleMode.png';
 import multiModeChar from '../../../assets/img/modeSelect/multiMode.png';
 import guestModeChar from '../../../assets/img/modeSelect/guestMode.png';
-import mzModeChar from '../../../assets/img/modeSelect/mzMode.png';
 import singleLock from '../../../assets/img/modeSelect/singleLock.png';
 import guestLock from '../../../assets/img/modeSelect/guestLock.png';
 import multiLock from '../../../assets/img/modeSelect/multiLock.png';
-import mzLock from '../../../assets/img/modeSelect/mzLock.png';
 import guideBtn from '../../../assets/svgs/gameGuideButton.svg';
 import ranking from '../../../assets/img/modeSelect/rankingMode.png';
 
