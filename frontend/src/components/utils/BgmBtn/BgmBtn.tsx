@@ -39,10 +39,16 @@ export const BgmBtn = () => {
     };
   }, [time]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3; // 음악 소리 너무 커서 조절했습니다
+    }
+  }, []);
+
   return (
     <Container>
       <audio ref={audioRef} loop>
-        <source src="/assets/bgm/pixelLand.mp3" type="audio/mp3" />
+        <source src="/assets/bgm/christmas.mp3" type="audio/mp3" />
         <track kind="captions" />
       </audio>
       {isLoginRoute ? <LoginRouterBtn isLogin={isLogin} /> : ''}
