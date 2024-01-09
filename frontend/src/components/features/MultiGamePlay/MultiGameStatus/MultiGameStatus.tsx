@@ -32,14 +32,16 @@ const Container = styled.div`
 type OwnProps = {
   gameUserList: { nickname: string; score: number }[];
   manager: string;
+  maxUserNumber: number;
+  userNumber: number;
 };
 
 export const MultiGameStatus = (props: OwnProps) => {
-  const { gameUserList, manager } = props;
+  const { gameUserList, manager, maxUserNumber, userNumber } = props;
 
   return (
     <Container>
-      <h1>게임현황</h1>
+      <h1>게임현황 {`(${userNumber}/${maxUserNumber})`}</h1>
       {gameUserList.map((item) => (
         <GameUserData
           key={item.nickname}
