@@ -46,4 +46,9 @@ export const Container = styled.div`
     display: flex;
     line-height: 1.2rem;
   }
+
+  & .optionChange {
+    padding-top: 0.3rem;
+    text-align: center;
+  }
 `;
