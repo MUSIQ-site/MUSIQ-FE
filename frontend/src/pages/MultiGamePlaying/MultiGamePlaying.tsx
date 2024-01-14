@@ -14,6 +14,7 @@ import {
   MultiGameStart,
   MultiGameOption,
   MultiGameOutBtn,
+  MultiGameOptionChangeModal,
 } from '../../components/features';
 import countDownBgm from '../../assets/audio/CountDownMid.wav';
 import blindSound from '../../assets/audio/무음.wav';
@@ -63,6 +64,7 @@ export const MultiGamePlaying = () => {
     quizAmount: 0,
     maxUserNumber: 0,
   }); // 게임방정보(방제목, 선택년도, 퀴즈개수, 최대인원)
+  const [isGameOptionChange, setIsGameOptionChange] = useState<boolean>(false); // 방장이 게임 정보 변경중인지, 아닌지
 
   const [manager, setManager] = useState<string>(''); // 내가 게임방의 매니저인지 아닌지
   const managerRef = useRef<string>('');
@@ -363,7 +365,7 @@ export const MultiGamePlaying = () => {
         case 'MODIFYINFO':
           setGameRoomInfo({
             title: msg.title,
-            musicYear: msg.year,
+            musicYear: msg.year.split(' '),
             quizAmount: msg.quizAmount,
             maxUserNumber: msg.maxUserNumber,
           });
@@ -469,6 +471,14 @@ export const MultiGamePlaying = () => {
           patchOutGameRoom();
         }}
       />
+      <MultiGameOptionChangeModal
+        multiModeCreateGameRoomLogId={
+          location.state.requestBody.multiModeCreateGameRoomLogId
+        }
+        isGameOptionChange={isGameOptionChange}
+        setIsGameOptionChange={setIsGameOptionChange}
+        gameRoomInfo={gameRoomInfo}
+      />
       <ReactPlayer
         url={musicUrl}
         controls
@@ -482,6 +492,9 @@ export const MultiGamePlaying = () => {
           requestBodyData={gameRoomInfo}
           gameRoomNumber={gameRoomNumber}
           password={location.state.requestBody.password}
+          manager={manager}
+          setIsGameOptionChange={setIsGameOptionChange}
+          isGameStart={isGameStart}
         />
         <MultiGameStatus
           gameUserList={gameUserList}
@@ -521,11 +534,20 @@ export const MultiGamePlaying = () => {
                   />
                 ) : (
                   <div className="waitingBox">
-                    <p className="waiting">...게임 대기중입니다</p>
-                    {manager === window.localStorage.getItem('nickname') ? (
-                      <MultiGameStart socketClient={client} />
+                    {isGameOptionChange ? (
+                      <>
+                        <p className="waiting">방장이 게임 옵션을</p>
+                        <p className="waiting">변경중입니다</p>
+                      </>
                     ) : (
-                      <p>방장이 게임을 시작할때까지 기다려주세요</p>
+                      <>
+                        <p className="waiting">...게임 대기중입니다</p>
+                        {manager === window.localStorage.getItem('nickname') ? (
+                          <MultiGameStart socketClient={client} />
+                        ) : (
+                          <p>방장이 게임을 시작할때까지 기다려주세요</p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
