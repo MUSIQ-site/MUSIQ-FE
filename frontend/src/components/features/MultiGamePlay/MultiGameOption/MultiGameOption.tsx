@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import * as S from './MultiGameOption.styled';
+import { MultiGameOptionChangeBtn } from '../MultiGameOptionChangeBtn';
 import { ReactComponent as RoomLock } from '../../../../assets/svgs/MultiLobby/roomLock.svg';
 import { ReactComponent as RoomUnlock } from '../../../../assets/svgs/MultiLobby/roomUnlock.svg';
 
@@ -7,12 +8,6 @@ type userInfoItem = {
   nickname: string;
   score: number;
   isSkipped: boolean;
-};
-
-type requestData = {
-  enteredUserNickname: string;
-  gameRoomManagerNickname: string;
-  userInfoItems: userInfoItem[];
 };
 
 type OwnProps = {
@@ -26,6 +21,9 @@ export const MultiGameOption = (props: {
   requestBodyData: OwnProps;
   gameRoomNumber: number;
   password: string;
+  manager: string;
+  setIsGameOptionChange: Dispatch<SetStateAction<boolean>>;
+  isGameStart: boolean;
 }) => {
   const {
     title,
@@ -34,7 +32,14 @@ export const MultiGameOption = (props: {
     maxUserNumber,
     // eslint-disable-next-line react/destructuring-assignment
   } = props.requestBodyData;
-  const { gameRoomNumber, password } = props;
+  const {
+    gameRoomNumber,
+    password,
+    manager,
+    setIsGameOptionChange,
+    isGameStart,
+  } = props;
+  const myNickname = window.localStorage.getItem('nickname');
 
   return (
     <S.Container>
@@ -56,7 +61,7 @@ export const MultiGameOption = (props: {
         <span className="title">문제 수 : </span>
         <span>{quizAmount}문제</span>
       </div>
-      <div>
+      <div className="data">
         <p className="title">출제 연도</p>
         <div className="yearList">
           {musicYear.map((year, idx) => {
@@ -73,6 +78,15 @@ export const MultiGameOption = (props: {
           })}
         </div>
       </div>
+      {manager === myNickname && !isGameStart ? (
+        <div className="optionChange">
+          <MultiGameOptionChangeBtn
+            setIsGameOptionChange={setIsGameOptionChange}
+          />
+        </div>
+      ) : (
+        ''
+      )}
     </S.Container>
   );
 };
