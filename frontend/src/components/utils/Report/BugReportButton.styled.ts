@@ -12,7 +12,7 @@ export const ReportButtonDiv = styled.div`
 
       &:hover {
         filter: brightness(0) saturate(100%) invert(93%) sepia(92%)
-          saturate(1357%)  brightness(101%) ;
+          saturate(1357%) brightness(101%);
       }
     }
   }
@@ -25,17 +25,18 @@ export const ModalDiv = styled.div`
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 118, 120, 1);
   position: absolute;
   z-index: 1;
-`
+`;
 
 export const StyledContents = styled.textarea`
-
-`
+  width: 20vw;
+  height: 10vh;
+`;
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -43,18 +44,21 @@ export const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: rgba(0, 0, 0, 0.5); // 반투명 배경 설정
   z-index: 1000;
 `;
 
 export const CloseButton = styled.button`
-position: absolute;
-top: 10px;
-right: 10px;
-background: none;
-border: none;
-cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+export const CheckBoxContainer = styled.div`
+  display: flex;
+  justify-content: space-around; 
+  margin-bottom: 5px; 
 `;
