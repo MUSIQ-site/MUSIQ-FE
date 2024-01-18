@@ -6,3 +6,4 @@ export * from './HomeBtn';
 export * from './Login';
 export * from './BgmBtn';
 export * from './Report';
+export * from './LoadingSpinner';
