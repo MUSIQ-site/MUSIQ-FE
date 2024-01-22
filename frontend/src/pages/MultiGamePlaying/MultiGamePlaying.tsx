@@ -47,7 +47,6 @@ type GameRoomInfo = {
   quizAmount: number;
   maxUserNumber: number;
 };
-
 export const MultiGamePlaying = () => {
   const navigate = useNavigate();
   const location = useLocation();
