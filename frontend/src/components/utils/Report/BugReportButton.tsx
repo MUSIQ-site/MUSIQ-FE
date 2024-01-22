@@ -6,6 +6,8 @@ import {
   StyledContents,
   CloseButton,
   CheckBoxContainer,
+  StyledReportSubmitButton,
+  ReportTitleDiv,
 } from './BugReportButton.styled';
 import reportIcon from '../../../assets/svgs/reportButton.svg';
 import exitIcon from '../../../assets/svgs/MultiLobby/exitButtonIcon.svg';
@@ -14,6 +16,10 @@ type ReportType = 'Suggestion' | 'Bug';
 
 interface ModalProps {
   onClose: () => void;
+}
+
+interface BugReportButtonProps {
+  onModalStateChange: (isOpen: boolean) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
@@ -59,8 +65,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     <ModalOverlay>
       <ModalDiv>
         <CloseButton onClick={onClose}>
-          <img src={exitIcon} alt="exit button" />
+          <img src={exitIcon} alt="exit button" width={30} />
         </CloseButton>
+        <ReportTitleDiv>신고 및 건의</ReportTitleDiv>
         <CheckBoxContainer>
           <label>
             <input
@@ -86,32 +93,36 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         <StyledContents
           maxLength={200}
           minLength={20}
-          placeholder="20~200자"
+          placeholder="20자 ~ 200자 내외로 유저님의 소중한 의견을 공유해주시면 감사하겠습니다."
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <button type="button" onClick={handleSubmit}>
+        <StyledReportSubmitButton type="button" onClick={handleSubmit}>
           제출
-        </button>
+        </StyledReportSubmitButton>
       </ModalDiv>
     </ModalOverlay>
   );
 };
 
-export const BugReportButton = () => {
+export const BugReportButton: React.FC<BugReportButtonProps> = ({
+  onModalStateChange,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    onModalStateChange(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    onModalStateChange(false);
   };
 
   return (
     <ReportButtonDiv>
-      <button type="button" onClick={handleOpenModal}>
+      <button type="button" onClick={handleOpenModal} tabIndex={0}>
         <img src={reportIcon} alt="report icon" width="120px" />
       </button>
       {isModalOpen && <Modal onClose={handleCloseModal} />}
