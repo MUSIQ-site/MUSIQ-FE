@@ -1,48 +1,92 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { Dispatch, SetStateAction } from 'react';
+import * as S from './MultiGameOption.styled';
+import { MultiGameOptionChangeBtn } from '../MultiGameOptionChangeBtn';
+import { ReactComponent as RoomLock } from '../../../../assets/svgs/MultiLobby/roomLock.svg';
+import { ReactComponent as RoomUnlock } from '../../../../assets/svgs/MultiLobby/roomUnlock.svg';
 
-const Container = styled.div`
-  position: absolute;
-  top: 3%;
-  right: 3%;
-  width: 10rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-radius: 16px;
-  border: 5px solid rgba(235, 226, 255, 0.6);
-  background-color: rgba(235, 226, 255, 0.6);
-  text-align: center;
-
-  & h1 {
-    font-family: 'Galmuri11', 'sans-serif';
-    font-weight: bold;
-    font-size: 1.5rem;
-    padding-bottom: 4%;
-  }
-
-  & li {
-    font-size: 1.2rem;
-    padding-bottom: 3%;
-  }
-`;
-
-type OwnProps = {
-  years: string[];
+type userInfoItem = {
+  nickname: string;
+  score: number;
+  isSkipped: boolean;
 };
 
-export const MultiGameOption = (props: OwnProps) => {
-  const { years } = props;
+type OwnProps = {
+  title: string;
+  musicYear: string[];
+  quizAmount: number;
+  maxUserNumber: number;
+};
+
+export const MultiGameOption = (props: {
+  requestBodyData: OwnProps;
+  gameRoomNumber: number;
+  password: string;
+  manager: string;
+  setIsGameOptionChange: Dispatch<SetStateAction<boolean>>;
+  isGameStart: boolean;
+}) => {
+  const {
+    title,
+    musicYear,
+    quizAmount,
+    maxUserNumber,
+    // eslint-disable-next-line react/destructuring-assignment
+  } = props.requestBodyData;
+  const {
+    gameRoomNumber,
+    password,
+    manager,
+    setIsGameOptionChange,
+    isGameStart,
+  } = props;
+  const myNickname = window.localStorage.getItem('nickname');
 
   return (
-    <Container>
-      <h1>출제 연도</h1>
-      <ul>
-        {years.map((year) => (
-          <li key={year}>{year}</li>
-        ))}
-      </ul>
-    </Container>
+    <S.Container>
+      <h1>
+        {gameRoomNumber}번방{' '}
+        <span>
+          {password === '' ? (
+            <RoomUnlock width={25} height={25} />
+          ) : (
+            <RoomLock width={30} height={25} />
+          )}
+        </span>
+      </h1>
+      <div className="data">
+        <span className="title">방 제목 : </span>
+        <span className="wordWrap">{title}</span>
+      </div>
+      <div className="data">
+        <span className="title">문제 수 : </span>
+        <span>{quizAmount}문제</span>
+      </div>
+      <div className="data">
+        <p className="title">출제 연도</p>
+        <div className="yearList">
+          {musicYear.map((year, idx) => {
+            if (idx === 0 && musicYear.length === 1) {
+              return `${year}`;
+            }
+            if (idx === 0) {
+              return ` ${year}, `;
+            }
+            if (idx === musicYear.length - 1) {
+              return `${year} `;
+            }
+            return `${year}, `;
+          })}
+        </div>
+      </div>
+      {manager === myNickname && !isGameStart ? (
+        <div className="optionChange">
+          <MultiGameOptionChangeBtn
+            setIsGameOptionChange={setIsGameOptionChange}
+          />
+        </div>
+      ) : (
+        ''
+      )}
+    </S.Container>
   );
 };

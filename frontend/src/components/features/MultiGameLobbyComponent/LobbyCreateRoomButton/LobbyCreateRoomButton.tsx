@@ -112,11 +112,6 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
       alert('문제 개수를 선택해주세요.');
       return;
     }
-
-    // if (maxUsers === 0) {
-    //   alert('최대 인원 수를 선택해주세요.');
-    //   return;
-    // }
     onCreate(roomName, password, musicYear.join(' '), quizAmount, maxUsers);
   };
 
