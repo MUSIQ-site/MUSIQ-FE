@@ -1,8 +1,9 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { FC, useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { ActiveCarouselNumAtom } from '../../../atoms/atoms';
+import { userApis } from '../../../hooks/api/userApis';
 import {
   Box,
   ButtonContainer,
@@ -22,7 +23,22 @@ import multiLock from '../../../assets/img/modeSelect/multiLock.png';
 import guideBtn from '../../../assets/svgs/gameGuideButton.svg';
 import ranking from '../../../assets/img/modeSelect/rankingMode.png';
 
-export const ModeSelectCarousel: React.FC = () => {
+type ModalData = {
+  data: {
+    title: string;
+    message: string;
+  };
+  noBtnClick: any; // 새로운 게임 데이터로 게임 생성(게임방으로 라우팅)
+  yesBtnClick: any;
+};
+
+type OwnProps = {
+  setIsToggled: Dispatch<SetStateAction<boolean>>;
+  setModalData: Dispatch<SetStateAction<ModalData>>;
+};
+
+export const ModeSelectCarousel: React.FC<OwnProps> = (props: OwnProps) => {
+  const { setIsToggled, setModalData } = props;
   const [back, setBack] = useState<boolean>(false);
   const navigate = useNavigate();
   const [lastInputTime, setLastInputTime] = useState<number>(0); // 키보드, 마우스 연타 방지용으로 시간 측정
@@ -70,7 +86,69 @@ export const ModeSelectCarousel: React.FC = () => {
       link: '/ranking',
     },
   ]);
-  const navigateToLink = () => {
+
+  // 진행중인 게임 체크 호출 후 아니오 버튼을 눌렀을때
+  const deleteRunningGame = async (link: string) => {
+    await userApis
+      .delete(`${process.env.REACT_APP_BASE_URL}/music/single/v2/pastgame`)
+      .then((res) => {
+        navigate(link);
+      });
+  };
+
+  // 진행중인 게임 체크 호출 후 예 버튼을 눌렀을때
+  const continueRunningGame = async (link: string) => {
+    await userApis
+      .get(`${process.env.REACT_APP_BASE_URL}/music/single/v2/resumption`)
+      .then((res) => {
+        const selectOptionList = {
+          difficulty: res.data.data.difficulty,
+          round: res.data.data.round,
+          life: res.data.data.life,
+          tryNum: res.data.data.tryNum,
+          listenNum: res.data.data.listenNum,
+          musicUrl: res.data.data.musicUrl,
+        };
+        navigate(link, { state: selectOptionList });
+      });
+  };
+
+  // 싱글모드 플레이 전 진행중인 게임 체크하는 api 호출
+  const isAlreadyGamePlaying = async (link: string) => {
+    await userApis
+      .get(`${process.env.REACT_APP_BASE_URL}/music/single/v2/pastgame`)
+      .then((res) => {
+        if (res.data.data.isExist) {
+          // 모달 띄우기 로직 처리
+          setIsToggled(true);
+          setModalData({
+            data: {
+              title: '😁',
+              message: `이미 플레이하던 이력이 있어요. 
+              이어하시겠습니까?.
+              난이도 : ${res.data.data.difficulty}, 남은 생명 : ${res.data.data.life}회.
+              플레이 연도 : ${res.data.data.year}
+              `,
+            },
+            noBtnClick: async () => {
+              // 아니오 누르면 게임 지우고 옵션으로 네비게이팅
+              await deleteRunningGame(link);
+            },
+            yesBtnClick: async () => {
+              // 예 누르면 기존의 옵션으로 싱글게임플레이로 네비게이팅
+              await continueRunningGame('/single/game-playing');
+            },
+          });
+        } else {
+          navigate(link);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const navigateToLink = async () => {
     const content = contents[visible];
 
     if (content.id === 1 && window.localStorage.getItem('UAT')) {
@@ -86,7 +164,12 @@ export const ModeSelectCarousel: React.FC = () => {
       return; // navigation을 수행하지 않고 함수를 종료
     }
 
-    navigate(content.link); // 조건이 맞으면 navigation을 수행
+    // 싱글모드 옵션창으로 가기 전에 기존에 하던 게임이 있는지 없는지 확인 후 옵션창으로 navigating
+    if (content.id === 2) {
+      await isAlreadyGamePlaying(content.link);
+    } else {
+      navigate(content.link); // 조건이 맞으면 navigation을 수행
+    }
   };
 
   const nextPlease = (): void => {

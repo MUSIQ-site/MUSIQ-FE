@@ -29,9 +29,6 @@ export const SingleGameOption = () => {
   const [activeCarouselNum, setActiveCarouselNum] = useRecoilState(
     ActiveCarouselNumAtom
   );
-  const [locationState, setLocationState] = useRecoilState(
-    TempLocationStateGameInfo
-  );
   const [modalData, setModalData] = useState<{
     data: {
       title: string;
@@ -135,21 +132,19 @@ export const SingleGameOption = () => {
       .post(
         `${
           process.env.REACT_APP_BASE_URL
-        }/music/single/room?difficulty=${levelList.title.toUpperCase()}&year=${checkedList.join(
+        }/music/single/v2/room?difficulty=${levelList.title.toUpperCase()}&year=${checkedList.join(
           ' '
         )}`
       )
       .then((res) => {
         const selectOptionList = {
-          checkDifficulty: levelList,
-          yearCheckedList: checkedList,
-          gameRoomData: res.data.data,
+          difficulty: res.data.data.difficulty,
+          round: res.data.data.round,
+          life: res.data.data.life,
+          tryNum: res.data.data.tryNum,
+          listenNum: res.data.data.listenNum,
+          musicUrl: res.data.data.musicUrl,
         };
-        setLocationState({
-          difficulty: levelList,
-          yearList: checkedList,
-          gameRoomData: res.data.data,
-        });
         navigate('/single/game-playing', { state: selectOptionList });
       })
       .catch((err) => {
