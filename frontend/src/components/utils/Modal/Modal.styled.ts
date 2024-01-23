@@ -22,13 +22,13 @@ export const ModalContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 32px;
+  justify-content: center;
+  gap: 20px;
   width: 618px;
   min-height: 252px;
   border-radius: 12px;
   text-align: center;
-  padding: 24px 32px;
+  padding: 51px 14px 10px 14px;
   background: url(${modalBg});
   background-size: cover;
 `;
@@ -57,6 +57,7 @@ export const ModalContent = styled.div`
 
   & .contentText {
     font-size: 24px;
+    padding-bottom: 0.5rem;
     margin: 0;
   }
 `;
