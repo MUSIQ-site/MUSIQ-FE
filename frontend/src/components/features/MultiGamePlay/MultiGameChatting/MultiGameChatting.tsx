@@ -122,13 +122,21 @@ export const MultiGameChatting = (props: OwnProps) => {
     window.addEventListener('keydown', handleKeyDown);
   }, []);
 
+  const DownRecentChatBtnHandler = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <S.Container
       onClick={() => {
         inputFocusRef.current = false;
       }}
     >
-      {userScrolled ? <DownRecentChatBtn /> : ''}
+      {userScrolled ? (
+        <DownRecentChatBtn clickHandler={DownRecentChatBtnHandler} />
+      ) : (
+        ''
+      )}
       <MultiSkipBox skipVote={skipVote} userLength={userLength} />
       <S.ChatListContainer ref={chatContainerRef}>
         {gameChatList.map((chat, index) => (
