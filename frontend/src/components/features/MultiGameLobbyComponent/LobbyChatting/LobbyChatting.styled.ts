@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ChattingWrapper = styled.div`
+  position: relative;
   width: 75vw;
   height: 35vh;
   flex-shrink: 0;
