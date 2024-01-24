@@ -8,7 +8,7 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import * as S from './MultiGameChatting.styled';
 import { MultiSkipBox } from '../MultiSkipBox';
-import { DownRecentChatBtn } from './DownRecentChatBtn';
+import { DownRecentChatBtn } from '../../../utils/DownRecentChatBtn/DownRecentChatBtn';
 
 type ChatType = {
   nickname: string;
@@ -34,7 +34,7 @@ export const MultiGameChatting = (props: OwnProps) => {
   const [inputText, setInputText] = useState<string>('');
   const chatEndRef = useRef<HTMLDivElement>(null); // 채팅창 맨 밑으로 스크롤 내리기
 
-  // 스크롤 구현
+  // 스크롤 구현을 위한 상태
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const userScrolledRef = useRef<boolean>(false);
   const [userScrolled, setUserScrolled] = useState<boolean>(false);
@@ -65,7 +65,7 @@ export const MultiGameChatting = (props: OwnProps) => {
     if (chatContainer) {
       if (
         chatContainer.scrollTop + chatContainer.clientHeight <
-        chatContainer.scrollHeight - 20
+        chatContainer.scrollHeight - 60
       ) {
         userScrolledRef.current = true;
         setUserScrolled(true);
@@ -133,7 +133,11 @@ export const MultiGameChatting = (props: OwnProps) => {
       }}
     >
       {userScrolled ? (
-        <DownRecentChatBtn clickHandler={DownRecentChatBtnHandler} />
+        <DownRecentChatBtn
+          clickHandler={DownRecentChatBtnHandler}
+          bgColor="rgba(217, 217, 217, 0.4)"
+          hoverColor="rgba(217, 217, 217, 1)"
+        />
       ) : (
         ''
       )}
