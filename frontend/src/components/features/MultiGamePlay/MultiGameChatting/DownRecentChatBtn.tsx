@@ -15,8 +15,16 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const DownRecentChatBtn = () => (
-  <Container>
-    <img src={DownArrow} alt="새로운 채팅 내역으로 돌아가기" width={25} />
-  </Container>
-);
+type OwnProps = {
+  clickHandler: () => void;
+};
+
+export const DownRecentChatBtn = (props: OwnProps) => {
+  const { clickHandler } = props;
+
+  return (
+    <Container onClick={clickHandler}>
+      <img src={DownArrow} alt="새로운 채팅 내역으로 돌아가기" width={25} />
+    </Container>
+  );
+};
