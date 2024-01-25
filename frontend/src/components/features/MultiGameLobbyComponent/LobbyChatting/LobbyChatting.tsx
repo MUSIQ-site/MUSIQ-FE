@@ -110,7 +110,7 @@ export const LobbyChatting = (props: OwnProps) => {
     setLobbyInputMessage(''); // 채팅 보내고 입력창 비우기
 
     // 채팅 도배 방지 로직
-    // setChatCount(chatCount + 1);
+    setChatCount(chatCount + 1);
 
     // 연속 3번의 메시지를 보낸 경우
     if (chatCount >= 4) {
