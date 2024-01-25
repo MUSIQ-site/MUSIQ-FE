@@ -4,7 +4,12 @@ import { useRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import { ActiveCarouselNumAtom } from '../../atoms/atoms';
 import * as S from './Landing.styled';
-import { Logo, BgmBtn, BugReportButton } from '../../components/utils';
+import {
+  Logo,
+  BgmBtn,
+  BugReportButton,
+  Notification,
+} from '../../components/utils';
 import {
   FadeInFromBottom,
   Blink,
@@ -82,6 +87,7 @@ export const Landing = () => {
             <p>please insert (1) coin</p>
           </Blink>
         </FadeInFromBottom>
+        <Notification />
       </S.LandingPageContainer>
     </>
   );

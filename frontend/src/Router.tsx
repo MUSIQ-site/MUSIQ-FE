@@ -95,7 +95,6 @@ const Router = () => {
             }
           />
         ))}
-
         {PublicPath.map((item) => (
           <Route
             key={item.path}
