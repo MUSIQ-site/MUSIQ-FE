@@ -63,7 +63,6 @@ export const LobbyChatting = (props: OwnProps) => {
         setUserScrolled(false);
       }
     }
-    console.log(userScrolledRef.current);
   };
 
   // useEffect를 사용하여 스크롤 이벤트 리스너 등록
