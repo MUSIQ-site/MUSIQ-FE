@@ -3,20 +3,26 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import DownArrow from '../../../assets/img/Mutli/downArrow.png';
 
-const Container = styled.div<{ bgColor: string; hoverColor: string }>`
+const Container = styled.button<{ bgColor: string; hoverColor: string }>`
   position: absolute;
   bottom: 18%;
   left: 45%;
   width: 3rem;
   height: 3rem;
+  /* padding: 0.5rem; */
   border-radius: 100%;
+  background-image: url(${DownArrow});
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  background-position: center center;
   background-color: ${(props) => props.bgColor};
   display: flex;
   justify-content: center;
   align-items: center;
 
-  & :hover {
-    background-color: ${(props) => props.bgColor};
+  &:hover {
+    background-color: ${(props) => props.hoverColor};
+    transition: all ease-in-out 0.3s;
   }
 `;
 
@@ -37,12 +43,11 @@ export const DownRecentChatBtn = (props: OwnProps) => {
       transition={{ duration: 0.8 }}
     >
       <Container
+        type="button"
         onClick={clickHandler}
         bgColor={bgColor}
         hoverColor={hoverColor}
-      >
-        <img src={DownArrow} alt="새로운 채팅 내역으로 돌아가기" width={25} />
-      </Container>
+      />
     </motion.div>
   );
 };

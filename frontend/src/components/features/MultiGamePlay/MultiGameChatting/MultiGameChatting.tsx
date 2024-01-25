@@ -74,7 +74,6 @@ export const MultiGameChatting = (props: OwnProps) => {
         setUserScrolled(false);
       }
     }
-    console.log(userScrolledRef.current);
   };
 
   // useEffect를 사용하여 스크롤 이벤트 리스너 등록
@@ -136,7 +135,7 @@ export const MultiGameChatting = (props: OwnProps) => {
         <DownRecentChatBtn
           clickHandler={DownRecentChatBtnHandler}
           bgColor="rgba(217, 217, 217, 0.4)"
-          hoverColor="rgba(217, 217, 217, 1)"
+          hoverColor="rgba(29, 29, 29, 1)"
         />
       ) : (
         ''
