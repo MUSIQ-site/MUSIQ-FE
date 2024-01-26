@@ -55,7 +55,8 @@ export const Landing = () => {
   }, [isModalOpen]);
 
   return (
-    <>
+    <S.Container>
+      <Notification />
       <BugReportButton onModalStateChange={setIsModalOpen} />
       <S.LandingPageContainer>
         <S.Version>v{process.env.REACT_APP_VERSION}</S.Version>
@@ -87,8 +88,7 @@ export const Landing = () => {
             <p>please insert (1) coin</p>
           </Blink>
         </FadeInFromBottom>
-        <Notification />
       </S.LandingPageContainer>
-    </>
+    </S.Container>
   );
 };
