@@ -19,8 +19,8 @@ export const ReportButtonDiv = styled.div`
 `;
 
 export const ModalDiv = styled.div`
-  width: 25vw;
-  height: 50vh;
+  width: 25rem;
+  height: 25rem;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
   display: flex;
@@ -36,8 +36,8 @@ export const ModalDiv = styled.div`
 `;
 
 export const StyledContents = styled.textarea`
-  width: 20vw;
-  height: 19vh;
+  width: 20rem;
+  height: 8rem;
   padding: 15px;
   border: 5px solid rgba(200, 191, 191, 0.7);
   border-radius: 8px;
