@@ -52,18 +52,6 @@ export const Signup = () => {
     yesBtnClick?: () => void | null;
   }>({ data: { title: '', message: '' } });
 
-  // 모바일 기기 접근을 막기 위해 추가한 코드
-  useEffect(() => {
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobile) {
-      navigate('/mobile-restriction');
-    }
-  }, []);
-
   // debounce를 이용한 유저아이디 중복검사, 0.2초마다 서버에 요청보내서 중복검사 실시간으로 시행
   useEffect(() => {
     if (debounceCheckUserId === '') {

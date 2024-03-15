@@ -96,18 +96,6 @@ export const Login = () => {
     }
   };
 
-  // 모바일 기기 접근을 막기 위해 추가한 코드
-  useEffect(() => {
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobile) {
-      navigate('/mobile-restriction');
-    }
-  }, []);
-
   useEffect(() => {
     const handleKeyUp = (e: any) => {
       if (e.key === 'Enter') {

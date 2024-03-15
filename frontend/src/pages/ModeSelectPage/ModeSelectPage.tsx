@@ -30,17 +30,6 @@ export const ModeSelectPage = () => {
   });
   const [isToggled, setIsToggled] = useState<boolean>(false);
 
-  useEffect(() => {
-    // 모바일 기기 접근을 막기 위해 추가한 코드
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobile) {
-      navigate('/mobile-restriction');
-    }
-  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}

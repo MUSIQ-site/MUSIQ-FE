@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import axios from 'axios';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { AnimatePresence } from 'framer-motion';
 import { UserIpAtom } from './atoms/atoms';
+import { checkIsMobile } from './utils/isMobile';
 import PrivateRoute from './hooks/PrivateRoute';
 import PublicRoute from './hooks/PublicRoute';
 import { BgmBtn } from './components/utils';
@@ -62,6 +63,7 @@ const PublicPath = [
 
 const Router = () => {
   const location = useLocation(); // 게임 플레이 페이지를 제외하고 bgm을 재생하기 위한 로직 추가
+  const navigate = useNavigate();
   const isMusicRoute =
     !location.pathname.includes('/game-play') &&
     !location.pathname.includes('/lobby') &&
@@ -70,6 +72,13 @@ const Router = () => {
   const [userIpAtom, setUserIpAtom] = useRecoilState(UserIpAtom);
 
   useEffect(() => {
+    const isMobile = checkIsMobile();
+    if (isMobile) {
+      navigate('/mobile-restriction');
+    } else {
+      navigate('/');
+    }
+
     axios.get('https://geolocation-db.com/json/').then((res) => {
       const userIp = res.data.IPv4;
       setUserIpAtom(userIp);

@@ -117,17 +117,6 @@ export const SingleGamePlaying = () => {
   const [keyEvent, setKeyEvent] = useState<string>('');
   const videoRef = useRef<ReactPlayer>(null);
 
-  // 모바일 기기 접근을 막기 위해 추가한 코드
-  useEffect(() => {
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-    if (isMobile) {
-      navigate('/mobile-restriction');
-    }
-  }, []);
-
   // 제목없는 음원으로 미디어 플레이어 제목 가리기
   navigator.mediaSession.metadata = new MediaMetadata({});
   const aud = new Audio(`${blindSound}`);

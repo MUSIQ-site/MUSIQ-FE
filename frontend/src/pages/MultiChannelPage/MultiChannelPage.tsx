@@ -20,15 +20,6 @@ export const MultiChannelPage = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false); // 모달 창 toggle
 
   useEffect(() => {
-    // 모바일 기기 접근을 막기 위해 추가한 코드
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobile) {
-      navigate('/mobile-restriction');
-    }
     setActiveCarouselNum({ activeCarouselNum: 2 });
   }, []);
 
