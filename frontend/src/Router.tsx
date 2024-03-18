@@ -4,7 +4,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { AnimatePresence } from 'framer-motion';
 import { UserIpAtom } from './atoms/atoms';
-import { checkIsMobile } from './utils/isMobile';
+import { checkIsMobile } from './apis/utils/isMobile';
 import PrivateRoute from './hooks/PrivateRoute';
 import PublicRoute from './hooks/PublicRoute';
 import { BgmBtn } from './components/utils';

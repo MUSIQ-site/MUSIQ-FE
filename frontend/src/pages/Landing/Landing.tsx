@@ -31,16 +31,12 @@ export const Landing = () => {
   }, []);
 
   useEffect(() => {
-    const handleKeyUp = (e: any) => {
-      if (e.key === 'Enter' && !isModalOpen) {
-        navigate('/select-mode');
-      }
-    };
+    const handleKeyUp = (e: any) =>
+      e.key === 'Enter' && !isModalOpen ? navigate('/select-mode') : '';
 
     window.addEventListener('keyup', handleKeyUp);
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
-      console.log(isModalOpen);
     };
   }, [isModalOpen]);
 
