@@ -1,24 +1,23 @@
 import styled from 'styled-components';
 
 export const RoomsWrapper = styled.div`
-  width: 79rem;
-  height: 34rem;
+  width: 53vw;
+  height: 54vh;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
   display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
-  top: 6%;
-  left: 23.5%;
+  top: 4%;
+  left: 27%;
   flex-wrap: wrap;
   flex-direction: column;
-  padding: 3px;
 `;
 
 export const Room = styled.button`
-  width: 38rem;
-  height: 10rem;
+  width: 25.5vw;
+  height: 16vh;
   padding: 1rem;
   margin: 6px;
   border: 1px solid #ccc;

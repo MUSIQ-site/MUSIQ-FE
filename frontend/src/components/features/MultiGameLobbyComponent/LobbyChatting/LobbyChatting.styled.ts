@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ChattingWrapper = styled.div`
   width: 75vw;
-  height: 23rem;
+  height: 35vh;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
@@ -18,7 +18,7 @@ export const ChattingWrapper = styled.div`
 
 export const ChattingContentsWrapper = styled.div`
   width: 73vw;
-  height: 18rem;
+  height: 27vh;
   border: solid 5px rgba(235, 226, 255, 0.2);
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.5);
