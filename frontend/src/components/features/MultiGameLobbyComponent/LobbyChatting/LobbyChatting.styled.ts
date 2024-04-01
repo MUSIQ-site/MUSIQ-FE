@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const ChattingWrapper = styled.div`
-  position: relative;
-  width: 75vw;
-  height: 35vh;
+  width: 102rem;
+  height: 23rem;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
@@ -13,13 +12,13 @@ export const ChattingWrapper = styled.div`
   align-items: center;
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
-  bottom: 5%;
+  top: 60%;
   left: 21%;
 `;
 
 export const ChattingContentsWrapper = styled.div`
-  width: 73vw;
-  height: 27vh;
+  width: 100rem;
+  height: 18rem;
   border: solid 5px rgba(235, 226, 255, 0.2);
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -36,13 +35,13 @@ export const ChattingContentsWrapper = styled.div`
 `;
 
 export const ChattingContent = styled.div`
-  width: 68vw;
+  width: 98rem;
   padding: 1%;
 `;
 
 export const ChattingInputWrapper = styled.div`
-  width: 73vw;
-  height: 3vh;
+  width: 100rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   flex-direction: row;

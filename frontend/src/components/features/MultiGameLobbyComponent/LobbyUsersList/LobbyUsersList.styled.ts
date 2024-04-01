@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const UsersListWrapper = styled.div`
-  width: 15vw;
-  height: 79vh;
+  width: 21rem;
+  height: 52rem;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
@@ -16,8 +16,8 @@ export const UsersListWrapper = styled.div`
 `;
 
 export const UserCellWrapper = styled.div`
-  width: 13vw;
-  height: 70vh;
+  width: 17rem;
+  height: 44rem;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 12px;
   display: flex;
