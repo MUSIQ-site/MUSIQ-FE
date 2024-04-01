@@ -5,7 +5,7 @@ import dancingChick from '../../../assets/img/playgame/danceChick.gif';
 import Logo from '../../../assets/svgs/logo.svg';
 import WrongBtn from '../../../assets/img/Mutli/wrongBtn.png';
 
-const version = '2.1.0';
+const version = process.env.REACT_APP_VERSION;
 const content = '내용이 들어갑니다';
 
 export const Notification = () => {
