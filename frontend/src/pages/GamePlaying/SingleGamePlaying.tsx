@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -23,14 +24,16 @@ import { BackBtn, Modal } from '../../components/utils';
 import * as S from './GamePlaying.styled';
 import blindSound from '../../assets/audio/무음.wav';
 
-type musicDataType = {
-  musicId: number;
-  musicUrl: string;
-};
-
 type answerDataType = {
   title: string;
   singer: string;
+};
+
+type gameResultDataType = {
+  mode: string;
+  selectYear: string[];
+  correctAnswerCnt: number;
+  exp: number;
 };
 
 const FirstMusicStartTime = 0;
@@ -40,76 +43,79 @@ const ThirdMusicStartTime = 120;
 export const SingleGamePlaying = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [locationState, setLocationState] = useRecoilState(
-    TempLocationStateGameInfo
-  );
   const [userIp, setUserIp] = useRecoilState(UserIpAtom);
+
+  // Modal 관련 상태()
   const [modalData, setModalData] = useState<{
     data: {
       title: string;
       message: string;
     };
-    noBtnClick?: () => void | null;
-    yesBtnClick?: () => void | null;
-  }>({ data: { title: '', message: '' } });
-  const [isToggled, setIsToggled] = useState<boolean>(false); // 모달 창 toggle
+    noBtnClick: () => void;
+    yesBtnClick: () => void;
+  }>({
+    data: { title: '', message: '' },
+    noBtnClick: () => {},
+    yesBtnClick: () => {},
+  });
+  const [isToggled, setIsToggled] = useState<boolean>(false);
   const isToggledRef = useRef<boolean>(false);
 
-  // 게임 데이터
-  const [musicData, setMusicData] = useState<musicDataType>({
-    musicId: 2,
-    musicUrl: 'https://www.youtube.com/watch?v=JeceYRagnQE',
-  });
-  const [answerData, setAnswerData] = useState<answerDataType>({
-    title: '',
-    singer: '',
-  });
-
-  // 생명, 기회, 게임점수 관련 상태
-  const [lives, setLives] = useState<number>(3); // 생명
-  const livesRef = useRef<number>(3);
-  const [chanceCnt, setChanceCnt] = useState<number>(3); // 기회
-  const chanceCntRef = useRef(3);
-  const showRoundRef = useRef<number>(0); // 보여주기 위한 게임라운드
-  const [round, setRound] = useState<number>(0); // 게임 라운드
+  // 게임 방 정보(난이도, 몇 라운드인지)
+  const gameDifficulty = location.state.difficulty;
+  const [round, setRound] = useState<number>(location.state.round);
   const roundRef = useRef(0);
-  const [tryCnt, setTryCnt] = useState<number>(3); // 정답 시도 횟수
-  const tryCntRef = useRef<number>(3);
+  const [playTime, setPlayTime] = useState<number>(5000);
+
+  // 유저의 목숨 관련 정보
+  // life: 생명, listenNum: 남은 듣기 횟수 , tryNum: 남은 정답입력 기회
+  const [life, setlife] = useState<number>(location.state.life);
+  const lifeRef = useRef<number>(location.state.life);
+  const [listenNum, setListennum] = useState<number>(location.state.listenNum);
+  const listenNumRef = useRef<number>(listenNum);
+  const [tryNum, setTryNum] = useState<number>(location.state.tryNum);
+  const tryNumRef = useRef<number>(tryNum);
 
   // 게임 스테이트 관련 상태
-  const [firstAttemp, setFirstAttemp] = useState<boolean>(true); // 처음 게임 들어왔는지, 아닌지
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 노래가 나오고있는지, 아닌지
   const isPlayingRef = useRef(false);
   const [isJudge, setIsJudge] = useState<boolean>(false); // 채점중인지 아닌지
   const [isSkip, setIsSkip] = useState<boolean>(false); // 스킵 눌렀는지 아닌지
   const isSkipRef = useRef<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(true); // 처음 게임 들어왔는지, 아닌지
   const [isCorrect, setIsCorrect] = useState<boolean>(false); // 맞췄는지, 틀렸는지
   const isCorrectRef = useRef(false);
   const [isLose, setIsLose] = useState<boolean>(false); // 졌는지, 안졌는지(결과창으로 라우팅 시 필요)
   const isLoseRef = useRef(false);
-  const [isBubbleTime, setIsBubbleTime] = useState<boolean>(false);
+  const [endRound, setEndRound] = useState<boolean>(false); // 해당 라운드가 종료되었는지 (게임종료 X)
+  const endRoundRef = useRef<boolean>(false);
+  const [isBubbleTime, setIsBubbleTime] = useState<boolean>(false); // 말풍선이 말해도되는지 아닌지
+  const [isGameDone, setIsGameDone] = useState<boolean>(false); // 게임이 종료되었는가
+  const isGameDoneRef = useRef<boolean>(false);
+  const [gameResultData, setGameResultData] = useState<gameResultDataType>({
+    mode: '',
+    selectYear: [''],
+    correctAnswerCnt: 0,
+    exp: 0,
+  });
+
+  // 유저의 정답을 담을 상태
+  const [answer, setAnswer] = useState<string>(''); // 정답 담을 state
+
+  // 게임 데이터 (음악 url, 가수 및 제목)
+  const [musicUrl, setMusicUrl] = useState<string>(location.state.musicUrl);
+  const [answerData, setAnswerData] = useState<answerDataType>({
+    title: '',
+    singer: '',
+  });
 
   // 버튼, 인풋, 키보드, 유튭 플레이어 관련 상태
   const [btn1isDisabled, setIsBtn1Disabled] = useState<boolean>(false);
   const [btn2isDisabled, setIsBtn2Disabled] = useState<boolean>(false);
   const [btn3isDisabled, setIsBtn3Disabled] = useState<boolean>(false);
-  const [inputText, setInputText] = useState<string>(''); // 정답 담을 state
   const [isInputFocus, setIsInputFocus] = useState<boolean>(false);
   const [keyEvent, setKeyEvent] = useState<string>('');
   const videoRef = useRef<ReactPlayer>(null);
-
-  // 제목없는 음원으로 미디어 플레이어 제목 가리기
-  navigator.mediaSession.metadata = new MediaMetadata({});
-  const aud = new Audio(`${blindSound}`);
-  const blindMusicTitlePlay = () => {
-    aud.volume = 0;
-    aud.loop = true;
-    aud.play();
-  };
-
-  const blindMusicTitleStop = () => {
-    aud.pause();
-  };
 
   // 모바일 기기 접근을 막기 위해 추가한 코드
   useEffect(() => {
@@ -122,25 +128,16 @@ export const SingleGamePlaying = () => {
     }
   }, []);
 
-  // back button handler
-  const backBtnHandler = () => {
-    setIsToggled(true);
-    isToggledRef.current = true;
-    setModalData({
-      data: {
-        title: '😥',
-        message: '노래 맞추기 게임을 그만 하시겠어요?',
-      },
-      yesBtnClick: () => {
-        setIsToggled(false);
-        isToggledRef.current = false;
-        navigate('/single/game-option');
-      },
-      noBtnClick: () => {
-        setIsToggled(false);
-        isToggledRef.current = false;
-      },
-    });
+  // 제목없는 음원으로 미디어 플레이어 제목 가리기
+  navigator.mediaSession.metadata = new MediaMetadata({});
+  const aud = new Audio(`${blindSound}`);
+  const blindMusicTitlePlay = () => {
+    aud.volume = 0;
+    aud.loop = true;
+    aud.play();
+  };
+  const blindMusicTitleStop = () => {
+    aud.pause();
   };
 
   // 게임 플레이 실행 - 실행 시 버튼 누른거에 따라 해당 시간으로 이동 후 플레이 시켜줌
@@ -152,8 +149,131 @@ export const SingleGamePlaying = () => {
     }
   };
 
+  // ///////////////////////////////////// 싱글모드 api /////////////////////////////////////
+  // 음악 재생 가능 여부 체크
+  const getIsMusicPlaying = async (time: number) => {
+    await userApis
+      .get(`${process.env.REACT_APP_BASE_URL}/music/single/v2/listencheck`)
+      .then((res) => {
+        if (res.data.data.isAvail) {
+          const resListenNum = res.data.data.listenNum;
+          setListennum(resListenNum);
+          listenNumRef.current = resListenNum;
+          playMusic(time);
+        } else {
+          setListennum(0);
+          listenNumRef.current = 0;
+        }
+      });
+  };
+
+  // 게임 종료
+  const deleteGameOver = async () => {
+    await userApis
+      .delete(`${process.env.REACT_APP_BASE_URL}/music/single/v2/gameover`)
+      .then((res) => {
+        setIsGameDone(true);
+        isGameDoneRef.current = true;
+        setGameResultData({
+          mode: res.data.data.difficulty,
+          selectYear: res.data.data.year.split(' '),
+          correctAnswerCnt: res.data.data.round,
+          exp: 0,
+        });
+      });
+  };
+
+  // 라운드 종료
+  const getRoundOver = async () => {
+    await userApis
+      .get(`${process.env.REACT_APP_BASE_URL}/music/single/v2/roundend`)
+      .then(async (res) => {
+        setAnswerData({
+          title: res.data.data.title,
+          singer: res.data.data.singer,
+        });
+        setEndRound(true);
+        endRoundRef.current = true;
+        setIsBubbleTime(false);
+        setlife(res.data.data.life);
+        lifeRef.current = res.data.data.life;
+        if (res.data.data.isGameOver) {
+          await deleteGameOver();
+        }
+      });
+  };
+
+  // 정답 채점
+  const getMarkAnswer = async (userAnswer: string) => {
+    setIsJudge(true);
+    setIsReady(false);
+    setIsBubbleTime(true);
+    const encodedInputText = encodeURIComponent(userAnswer);
+    await userApis
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/music/single/v2/answercheck?answer=${encodedInputText}`
+      )
+      .then(async (res) => {
+        if (res.data.data.isEnded || res.data.data.tryNum === 0) {
+          await getRoundOver();
+        }
+        setTryNum(res.data.data.tryNum);
+        tryNumRef.current = res.data.data.tryNum;
+        if (res.data.data.isCorrect) {
+          setIsCorrect(res.data.data.isCorrect);
+          isCorrectRef.current = res.data.data.isCorrect;
+        } else {
+          setIsLose(!res.data.data.isCorrect);
+          isLoseRef.current = !res.data.data.isCorrect;
+        }
+        setIsJudge(false);
+      })
+      .catch((err) => {
+        setIsJudge(false);
+      });
+  };
+
+  // 스킵
+  const patchSkip = async () => {
+    await userApis
+      .patch(`${process.env.REACT_APP_BASE_URL}/music/single/v2/skip`)
+      .then(async (res) => {
+        setIsSkip(res.data.data.isSkipped);
+        isSkipRef.current = res.data.data.isSkipped;
+        await getRoundOver();
+      });
+  };
+
+  // 다음문제
+  const getNextRound = async () => {
+    await userApis
+      .get(`${process.env.REACT_APP_BASE_URL}/music/single/v2/nextround`)
+      .then((res) => {
+        setIsJudge(false);
+        setIsSkip(false);
+        isSkipRef.current = false;
+        setIsCorrect(false);
+        isCorrectRef.current = false;
+        setIsLose(false);
+        isLoseRef.current = false;
+        setEndRound(false);
+        endRoundRef.current = false;
+        setListennum(res.data.data.listenNum);
+        listenNumRef.current = res.data.data.listenNum;
+        setTryNum(res.data.data.tryNum);
+        tryNumRef.current = res.data.data.tryNum;
+        setRound(res.data.data.round);
+        roundRef.current = res.data.data.round;
+        setMusicUrl(res.data.data.musicUrl);
+        setAnswerData({
+          title: '',
+          singer: '',
+        });
+      });
+  };
+
   // 몇 초 뒤에 멈출 지 설정
-  const stopAfterSecond = (second = 1000) => {
+  const stopAfterSecond = (second: number) => {
     if (isPlaying) {
       setTimeout(() => {
         setIsPlaying(false);
@@ -163,12 +283,9 @@ export const SingleGamePlaying = () => {
   };
 
   // 노래듣기 버튼 handler
-  // 버튼 클릭하면 노래 시작하고, 기회 감소
-  const playBtnHandler = (Time: number) => {
-    setFirstAttemp(false);
-    playMusic(Time);
-    setChanceCnt((prev) => prev - 1);
-    chanceCntRef.current -= 1;
+  const playBtnHandler = async (Time: number) => {
+    await getIsMusicPlaying(Time);
+    setIsReady(false);
   };
 
   // 버튼 리스트
@@ -199,167 +316,30 @@ export const SingleGamePlaying = () => {
     },
   ];
 
-  // 모르겠어요 버튼 handler
-  const dontKnowBtnHandler = async () => {
-    await userApis
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/music/single/giveup?room-id=${location.state.gameRoomData.roomId}&round=${round}`
-      )
-      .then((res) => {
-        setLives(0);
-        setIsLose(true);
-        isLoseRef.current = true;
-        setIsJudge(false);
-        setIsBubbleTime(false);
-        setAnswerData({
-          title: res.data.data.title,
-          singer: res.data.data.singer,
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const patchGameResult = async () => {
-    const exp = await userApis
-      .patch(
-        `${process.env.REACT_APP_BASE_URL}/music/single/over?room-id=${location.state.gameRoomData.roomId}&round=${roundRef.current}`
-      )
-      .then((res) => res.data.data.exp)
-      .catch((err) => console.log(err));
-
-    return { exp };
+  // 뒤로가기 버튼 이벤트핸들러
+  const backBtnHandler = () => {
+    setIsToggled(true);
+    isToggledRef.current = true;
+    setModalData({
+      data: {
+        title: '😥',
+        message: '노래 맞추기 게임을 그만 하시겠어요?',
+      },
+      yesBtnClick: async () => {
+        setIsToggled(false);
+        isToggledRef.current = false;
+        navigate('/select-mode');
+      },
+      noBtnClick: () => {
+        setIsToggled(false);
+        isToggledRef.current = false;
+      },
+    });
   };
 
   // 결과창으로 라우팅
   const goResultPage = async () => {
-    const userExp = await patchGameResult();
-    const resultData = {
-      mode: location.state.checkDifficulty.title,
-      selectYear: location.state.yearCheckedList,
-      correctAnswerCnt: round,
-      exp: userExp.exp,
-    };
-    navigate('/single/game-result', { state: resultData });
-  };
-
-  // 노래 불러오기
-  const getMusic = async () => {
-    setKeyEvent('');
-    setIsSkip(false);
-    isSkipRef.current = false;
-    setTryCnt(3);
-    tryCntRef.current = 3;
-    setIsJudge(false);
-    setIsBubbleTime(false);
-
-    await userApis
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/music/single/quiz?room-id=${location.state.gameRoomData.roomId}&round=${roundRef.current}`
-      )
-      .then((res) => {
-        setMusicData({
-          musicId: res.data.data.musicId,
-          musicUrl: res.data.data.musicUrl,
-        });
-        setIsBtn1Disabled(false);
-        setIsBtn2Disabled(false);
-        setIsBtn3Disabled(false);
-        setChanceCnt(3);
-        chanceCntRef.current = 3;
-        setIsCorrect(false);
-        isCorrectRef.current = false;
-      })
-      .catch((err) => {
-        navigate('/select-mode');
-      });
-  };
-
-  // 모르겠어요 클릭 시, 현재노래 정답 셋팅, 다음 라운드로 셋팅 (다음문제 불러오기 위해서!)
-  const skipBtnHandler = async () => {
-    setFirstAttemp(false);
-    await userApis
-      .patch(
-        `${process.env.REACT_APP_BASE_URL}/music/single/skip?room-id=${location.state.gameRoomData.roomId}&round=${roundRef.current}`
-      )
-      .then(async (res) => {
-        setRound(res.data.data.round);
-        roundRef.current = res.data.data.round;
-        setAnswerData({
-          title: res.data.data.title,
-          singer: res.data.data.singer,
-        });
-      })
-      .catch((err) => {
-        navigate('/select-mode');
-      });
-  };
-
-  // 하트가 0개라서 게임 종료 시
-  // 스킵 시 하트 감소 다음 문제로 넘어가기
-  const skipNextMusic = async () => {
-    await skipBtnHandler();
-    setKeyEvent('');
-    setInputText('');
-    setIsJudge(false);
-    setIsSkip(true);
-    setTryCnt(3);
-    tryCntRef.current = 3;
-    isSkipRef.current = true;
-    setLives((prev) => prev - 1);
-    livesRef.current -= 1;
-    setIsBubbleTime(false);
-  };
-
-  // 채점 맞으면 round 갱신, 틀려도 그냥 가만냅두기
-  const activeButtonForJudge = async (answerInputText: string) => {
-    setIsBubbleTime(true);
-    setIsJudge(true);
-    setFirstAttemp(false);
-    const encodedInputText = encodeURIComponent(answerInputText);
-
-    // 채점
-    await userApis
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/music/single/result?room-id=${location.state.gameRoomData.roomId}&round=${round}&answer=${encodedInputText}`
-      )
-      .then(async (res) => {
-        if (res.data.data.isCorrect) {
-          setIsCorrect(true);
-          isCorrectRef.current = true;
-          setIsJudge(false);
-          setRound(res.data.data.round);
-          roundRef.current = res.data.data.round;
-          setAnswerData({
-            title: res.data.data.title,
-            singer: res.data.data.singer,
-          });
-        } else if (
-          !res.data.data.isCorrect &&
-          lives === 1 &&
-          tryCntRef.current <= 1
-        ) {
-          setLives(0);
-          setIsLose(true);
-          isLoseRef.current = true;
-          setIsJudge(false);
-          setIsBubbleTime(false);
-        } else if (!res.data.data.isCorrect && tryCntRef.current <= 1) {
-          skipNextMusic();
-          setAnswerData({
-            title: res.data.data.title,
-            singer: res.data.data.singer,
-          });
-        } else {
-          setTryCnt((prev) => prev - 1);
-          tryCntRef.current -= 1;
-          setIsJudge(false);
-          setAnswerData({
-            title: res.data.data.title,
-            singer: res.data.data.singer,
-          });
-        }
-      })
-      .catch((err) => navigate('/select-mode'));
+    navigate('/single/game-result', { state: gameResultData });
   };
 
   // 게임 로그 찍는 요청
@@ -370,78 +350,72 @@ export const SingleGamePlaying = () => {
     });
   };
 
-  // 처음 입장 시
+  // 처음 렌더링 시
   useEffect(() => {
-    if (!location.state || locationState.difficulty.title === '') {
-      navigate('/select-mode');
-    } else {
-      setRound(location.state.gameRoomData.round);
-      roundRef.current = location.state.gameRoomData.round;
-      getMusic();
-      patchGameLog();
+    switch (location.state.difficulty) {
+      case 'EASY':
+        setPlayTime(3000);
+        break;
+      case 'NORMAL':
+        setPlayTime(2000);
+        break;
+      case 'HARD':
+        setPlayTime(1000);
+        break;
+      case 'CRAZY':
+        setPlayTime(500);
+        break;
+      default:
+        break;
     }
-
+    // patchGameLog();
     const handleKeyUp = (e: any) => {
       if (
         e.target.nodeName === 'INPUT' ||
-        isLoseRef.current ||
         isPlayingRef.current ||
-        isToggledRef.current ||
-        location.state.gameRoomData.problems === roundRef.current
+        isToggledRef.current
       ) {
         return;
       }
-      if (
-        e.key === '.' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        livesRef.current > 1
-      ) {
-        setFirstAttemp(false);
-        skipNextMusic();
+      if (e.key === '.' && lifeRef.current > 1 && !endRoundRef.current) {
+        setIsReady(false);
+        patchSkip();
         setKeyEvent('');
-        setInputText('');
       }
       if (
         e.key === 'ArrowLeft' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
-        setFirstAttemp(false);
-        playMusic(FirstMusicStartTime);
-        setChanceCnt((prev) => prev - 1);
-        chanceCntRef.current -= 1;
+        setIsReady(false);
+        getIsMusicPlaying(FirstMusicStartTime);
         setKeyEvent('');
       }
       if (
         e.key === 'ArrowDown' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
-        setFirstAttemp(false);
-        playMusic(SecondMusicStartTime);
-        setChanceCnt((prev) => prev - 1);
-        chanceCntRef.current -= 1;
+        setIsReady(false);
+        getIsMusicPlaying(SecondMusicStartTime);
         setKeyEvent('');
       }
       if (
         e.key === 'ArrowRight' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
-        setFirstAttemp(false);
-        playMusic(ThirdMusicStartTime);
-        setChanceCnt((prev) => prev - 1);
-        chanceCntRef.current -= 1;
+        setIsReady(false);
+        getIsMusicPlaying(ThirdMusicStartTime);
         setKeyEvent('');
       }
-      if (e.keyCode === 32 && (isCorrectRef.current || isSkipRef.current)) {
-        setFirstAttemp(false);
-        getMusic();
-        showRoundRef.current += 1;
+      if (
+        e.keyCode === 32 &&
+        (isCorrectRef.current || isSkipRef.current) &&
+        !isGameDoneRef.current
+      ) {
+        setIsReady(false);
+        getNextRound();
         setKeyEvent('');
       }
     };
@@ -449,48 +423,41 @@ export const SingleGamePlaying = () => {
     const handleKeyDown = (e: any) => {
       if (
         e.target.nodeName === 'INPUT' ||
-        isLoseRef.current ||
         isPlayingRef.current ||
-        isToggledRef.current ||
-        location.state.gameRoomData.problems === roundRef.current
+        isToggledRef.current
       ) {
         return;
       }
-      if (
-        e.key === '.' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        livesRef.current > 1
-      ) {
+      if (e.key === '.' && lifeRef.current > 1 && !endRoundRef.current) {
         setKeyEvent('.');
       }
       if (
         e.key === 'ArrowLeft' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
         setKeyEvent('ArrowLeft');
       }
       if (
         e.key === 'ArrowDown' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
         setKeyEvent('ArrowDown');
       }
       if (
         e.key === 'ArrowRight' &&
-        !isCorrectRef.current &&
-        !isSkipRef.current &&
-        chanceCntRef.current > 0
+        listenNumRef.current > 0 &&
+        !endRoundRef.current
       ) {
         setKeyEvent('ArrowRight');
       }
-      if (e.keyCode === 32 && (isCorrectRef.current || isSkipRef.current)) {
-        getMusic();
-        showRoundRef.current += 1;
+      if (
+        e.keyCode === 32 &&
+        (isCorrectRef.current || isSkipRef.current) &&
+        !isGameDoneRef.current
+      ) {
+        getNextRound();
         setKeyEvent('');
       }
     };
@@ -524,20 +491,24 @@ export const SingleGamePlaying = () => {
       transition={{ duration: 1 }}
     >
       <S.Container>
+        {/* 모달 */}
         <Modal
           {...modalData}
           isToggled={isToggled}
           setIsToggled={setIsToggled}
         />
+        {/* 뒤로가기 버튼 */}
         <BackBtn url="/single/game-option" handleClick={backBtnHandler} />
+        {/* 좌측 하단 게임 설명 컴포넌트 */}
         <GameExplain />
-        {!isCorrect && !isSkip && !isLose ? (
+        {!endRound ? (
           <ReactPlayer
-            url={musicData.musicUrl}
+            url={musicUrl}
             controls
             playing={isPlaying}
             onPlay={() => {
-              stopAfterSecond(location.state.checkDifficulty.time);
+              // 플레이 시간 추가해야함
+              stopAfterSecond(playTime);
             }}
             width="0"
             height="0"
@@ -548,8 +519,9 @@ export const SingleGamePlaying = () => {
           ''
         )}
 
+        {/* 말풍선 */}
         <S.TalkBoxPosition>
-          {firstAttemp ? (
+          {isReady ? (
             <S.TalkBoxContainer>
               <img src={talkBoxImg} alt="말풍선" width={200} />
               <p className="firstAttempGame1">게임이 시작되었어요</p>
@@ -582,30 +554,18 @@ export const SingleGamePlaying = () => {
         </S.TalkBoxPosition>
         <div className="emptyBox" />
 
+        {/* 가운데 게임 진행 알림, 병아리, 정답입력 인풋, 버튼 컴포넌트 */}
         <S.MiddleContainer>
           <S.GameStatusExplainContainer>
-            {location.state.gameRoomData.problems === round ? (
+            {isGameDone ? (
               <p className="explainGame">
-                축하드립니다 준비된 모든 라운드가 끝났습니다!
+                게임이 끝났습니다. 결과를 확인해주세요
               </p>
             ) : (
-              <div>
-                {isLose ? (
-                  <p className="explainGame">
-                    게임이 끝났습니다. 결과를 확인해주세요
-                  </p>
-                ) : (
-                  <p className="explainGame">
-                    현재 {showRoundRef.current + 1} 라운드
-                  </p>
-                )}
-              </div>
+              <p className="explainGame">현재 {round} 라운드</p>
             )}
           </S.GameStatusExplainContainer>
-          {location.state.gameRoomData.problems === round ||
-          isCorrect ||
-          isLose ||
-          isSkip ? (
+          {endRound ? (
             ''
           ) : (
             <div>
@@ -620,13 +580,13 @@ export const SingleGamePlaying = () => {
               )}
             </div>
           )}
-          {isCorrect || isSkip || isLose ? (
+          {endRound ? (
             <S.AnswerYouTubePlayerPosition>
               <p>
                 {answerData.singer} - {answerData.title}
               </p>
               <ReactPlayer
-                url={musicData.musicUrl}
+                url={musicUrl}
                 controls
                 playing
                 width="300px"
@@ -639,40 +599,42 @@ export const SingleGamePlaying = () => {
             <>
               <DancingChick />
               <AnswerInput
-                tryCntRef={tryCntRef}
-                isCorrect={isCorrect}
-                isLose={isLose}
-                isJudge={isJudge}
-                inputText={inputText}
+                tryCntRef={tryNumRef}
+                isCorrect={isCorrect} // 맞았는지
+                isLose={isLose} // 졌는지
+                isJudge={isJudge} // 채점중인지 아닌지
+                inputText={answer}
                 setInputText={(e: any) => {
-                  setInputText(e);
+                  setAnswer(e);
                 }}
-                activeButton={activeButtonForJudge}
-                setIsInputFocus={setIsInputFocus}
+                activeButton={getMarkAnswer} // 채점
+                setIsInputFocus={setIsInputFocus} // 엔터치면 인풋 포커스
               />
             </>
           )}
           <S.PlayingBtnBoxPosition>
-            {isLose || location.state.gameRoomData.problems === round ? (
+            {/* 게임종료되었으면 결과 버튼만 렌더링 */}
+            {isGameDone ? (
               <ResultBtn
                 clickHandler={async () => {
                   await goResultPage();
                 }}
               />
             ) : (
-              <div>
-                {isCorrect || isSkip ? (
+              <>
+                {/* 정답이거나, 스킵을 눌렀을때는 다음으로 가기 버튼 렌더링 */}
+                {isCorrect || isSkip || tryNum === 0 ? (
                   <NextBtn
                     keyEvent={keyEvent}
-                    clickHandler={() => {
-                      getMusic();
-                      showRoundRef.current += 1;
+                    clickHandler={async () => {
+                      await getNextRound();
                     }}
                   />
                 ) : (
                   <div>
-                    {lives <= 1 && chanceCnt === 0 ? (
-                      <DontKnowBtn clickHandler={dontKnowBtnHandler} />
+                    {/* 남은 생명과 듣기기회에 따라서 모르겠어요 버튼 , 기본 플레이와 스킵버튼 */}
+                    {life <= 1 && listenNum === 0 ? (
+                      <DontKnowBtn clickHandler={patchSkip} />
                     ) : (
                       <div>
                         <div className="btnContainer">
@@ -680,14 +642,14 @@ export const SingleGamePlaying = () => {
                             <PlayBtn
                               btnName={item.btnName}
                               onClickHandler={item.onClickHandler}
-                              isBtnDisabled={chanceCnt <= 0 ? true : isPlaying}
+                              isBtnDisabled={listenNum <= 0 || isPlaying}
                               key={item.btnName}
                               keyEvent={item.keyEvent}
                             />
                           ))}
                           <SkipBtn
-                            clickHandler={skipNextMusic}
-                            isBtnDisabled={lives <= 1 || isPlaying}
+                            clickHandler={patchSkip}
+                            isBtnDisabled={life <= 1 || isPlaying}
                             keyEvent={keyEvent}
                           />
                         </div>
@@ -695,18 +657,19 @@ export const SingleGamePlaying = () => {
                     )}
                   </div>
                 )}
-              </div>
+              </>
             )}
           </S.PlayingBtnBoxPosition>
         </S.MiddleContainer>
 
+        {/* 우측 게임옵션, 하트, 헤드폰 컴포넌트 */}
         <S.RightSideContainer>
           <S.TopRightSideContainer>
-            <OptionBox difficulty={location.state.checkDifficulty.title} />
-            <HeartGauge lives={lives} />
+            <OptionBox difficulty={gameDifficulty} />
+            <HeartGauge lives={life} />
           </S.TopRightSideContainer>
           <S.bottomRightSideContainer>
-            <ChanceGauge chanceCnt={chanceCnt} />
+            <ChanceGauge chanceCnt={listenNum} />
           </S.bottomRightSideContainer>
         </S.RightSideContainer>
       </S.Container>

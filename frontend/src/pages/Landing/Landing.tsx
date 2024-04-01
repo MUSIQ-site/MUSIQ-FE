@@ -4,7 +4,12 @@ import { useRecoilState } from 'recoil';
 import { motion } from 'framer-motion';
 import { ActiveCarouselNumAtom } from '../../atoms/atoms';
 import * as S from './Landing.styled';
-import { Logo, BgmBtn, BugReportButton } from '../../components/utils';
+import {
+  Logo,
+  BgmBtn,
+  BugReportButton,
+  Notification,
+} from '../../components/utils';
 import {
   FadeInFromBottom,
   Blink,
@@ -50,7 +55,8 @@ export const Landing = () => {
   }, [isModalOpen]);
 
   return (
-    <>
+    <S.Container>
+      <Notification />
       <BugReportButton onModalStateChange={setIsModalOpen} />
       <S.LandingPageContainer>
         <S.Version>v{process.env.REACT_APP_VERSION}</S.Version>
@@ -83,6 +89,6 @@ export const Landing = () => {
           </Blink>
         </FadeInFromBottom>
       </S.LandingPageContainer>
-    </>
+    </S.Container>
   );
 };

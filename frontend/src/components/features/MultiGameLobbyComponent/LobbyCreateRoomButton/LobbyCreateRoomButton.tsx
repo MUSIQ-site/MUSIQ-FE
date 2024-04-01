@@ -61,7 +61,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
     '2022',
     '2023',
   ];
-  const [maxUserNumber, setMaxUserNumber] = useState('6');
+  const [maxUserNumber, setMaxUserNumber] = useState(1);
 
   // 비공개 여부 체크박스 상태 변경 핸들러
   const handlePrivateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +92,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
   const handleCreateRoom = () => {
     // 입력 검증 로직
 
-    const maxUsers = parseInt(maxUserNumber, 10);
+    const maxUsers = maxUserNumber;
     // eslint-disable-next-line no-restricted-globals
     if (isNaN(maxUsers) || maxUsers < 1 || maxUsers > 10) {
       alert('최대 인원 수는 1~10 사이의 숫자여야 합니다.');
@@ -216,17 +216,17 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
             </StyledAmountLabel>
           ))}
         </SelectQuizAmoutWrapper>
-        {/* <SelectMaxUserNumberWrapper>
+        <SelectMaxUserNumberWrapper>
           <div style={{ fontSize: '18px' }}>최대 인원 수를 입력해주세요</div>
           <StyledNumberInput
             type="number"
             value={maxUserNumber}
-            onChange={(e) => setMaxUserNumber(e.target.value)}
+            onChange={(e) => setMaxUserNumber(parseInt(e.target.value, 10))}
             min="1"
             max="10"
             placeholder="1~10"
           />
-        </SelectMaxUserNumberWrapper> */}
+        </SelectMaxUserNumberWrapper>
         <StyledCreateRoomButton type="button" onClick={handleCreateRoom}>
           방 만들기
         </StyledCreateRoomButton>

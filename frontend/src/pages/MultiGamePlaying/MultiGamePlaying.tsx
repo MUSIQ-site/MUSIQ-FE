@@ -361,7 +361,7 @@ export const MultiGamePlaying = () => {
             message: '대기중입니다.. 삐약!',
           });
           break;
-        case 'MODIFYINFO':
+        case 'MODIFYINFO': // 게임 방 옵션 변경 시 다시 받아오는 변경된 데이터
           setGameRoomInfo({
             title: msg.title,
             musicYear: msg.year.split(' '),
@@ -477,6 +477,7 @@ export const MultiGamePlaying = () => {
         isGameOptionChange={isGameOptionChange}
         setIsGameOptionChange={setIsGameOptionChange}
         gameRoomInfo={gameRoomInfo}
+        currentUserNumber={gameUserList.length}
       />
       <ReactPlayer
         url={musicUrl}

@@ -17,6 +17,7 @@ type OwnProps = {
   setIsGameOptionChange: React.Dispatch<React.SetStateAction<boolean>>;
   gameRoomInfo: GameRoomInfo;
   multiModeCreateGameRoomLogId: number;
+  currentUserNumber: number;
 };
 
 const yearsOptions = [
@@ -39,6 +40,7 @@ export const MultiGameOptionChangeModal = (props: OwnProps) => {
     isGameOptionChange,
     setIsGameOptionChange,
     multiModeCreateGameRoomLogId,
+    currentUserNumber,
   } = props;
   // eslint-disable-next-line react/destructuring-assignment
   const { title, musicYear, quizAmount, maxUserNumber } = props.gameRoomInfo;
@@ -88,7 +90,7 @@ export const MultiGameOptionChangeModal = (props: OwnProps) => {
       title: newTitle,
       year: newYear.join(' '),
       quizAmount: newQuizAmount,
-      maxUserNumber: 6,
+      maxUserNumber: newMaxUserNumber,
     };
     await userApis
       .patch(`${process.env.REACT_APP_BASE_URL}/game/main/modify`, payload)
@@ -219,6 +221,51 @@ export const MultiGameOptionChangeModal = (props: OwnProps) => {
                         </label>
                       ))}
                     </S.QuizAmountStyle>
+                    <div className="whiteLine" />
+                    {/* 최대 인원 수 변경 input */}
+                    <S.MaxUserNumberInputStyle>
+                      <h2>최대 인원 수</h2>
+                      <input
+                        type="number"
+                        value={newMaxUserNumber}
+                        className="maxUserNumberInput"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setnewMaxUserNumber((prev: number) => {
+                            if (prev + 1 > 10) {
+                              alert('게임 방 최대 인원은 10명입니다.');
+                              return prev;
+                            }
+                            return prev + 1;
+                          });
+                        }}
+                      >
+                        🔼
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setnewMaxUserNumber((prev: number) => {
+                            // 현재 게임 방 인원보다 작으면 alert 띄우기
+                            if (prev - 1 < currentUserNumber) {
+                              alert(
+                                '현재 방 인원보다 적은 수로 변경 불가능합니다.'
+                              );
+                              return prev;
+                            }
+                            if (prev - 1 < 1) {
+                              alert('게임 방 최소 인원은 1명입니다.');
+                              return prev;
+                            }
+                            return prev - 1;
+                          });
+                        }}
+                      >
+                        🔽
+                      </button>
+                    </S.MaxUserNumberInputStyle>
                   </S.QuizAmountMaxUserContainer>
                   <S.UpdateBtnStyle onClick={handleUpdateBtnClick}>
                     적용

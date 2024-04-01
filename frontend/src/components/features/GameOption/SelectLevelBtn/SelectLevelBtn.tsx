@@ -1,4 +1,3 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
 import * as S from './SelectLevelBtn.styled';
 import { ReactComponent as CircleIcon } from '../../../../assets/svgs/circle.svg';
 

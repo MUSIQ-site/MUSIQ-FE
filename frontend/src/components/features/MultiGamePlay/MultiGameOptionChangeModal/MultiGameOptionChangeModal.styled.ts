@@ -76,7 +76,7 @@ export const TitleChangeStyle = styled.div`
 
   & .roomTitleStyle {
     width: 344px;
-    height: 40px;
+    height: 50px;
     padding: 1rem;
     border-radius: 8px;
     border: 3px solid #363636;
@@ -136,8 +136,6 @@ export const QuizAmountMaxUserContainer = styled.div`
 `;
 
 export const QuizAmountStyle = styled.div`
-  flex: 1;
-
   & h2 {
     font-size: 1.5rem;
     padding-bottom: 0.7rem;

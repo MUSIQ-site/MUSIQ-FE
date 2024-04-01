@@ -8,6 +8,7 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import * as S from './MultiGameChatting.styled';
 import { MultiSkipBox } from '../MultiSkipBox';
+import { DownRecentChatBtn } from '../../../utils/DownRecentChatBtn/DownRecentChatBtn';
 
 type ChatType = {
   nickname: string;
@@ -32,7 +33,11 @@ export const MultiGameChatting = (props: OwnProps) => {
   const inputFocusRef = useRef<boolean>(false);
   const [inputText, setInputText] = useState<string>('');
   const chatEndRef = useRef<HTMLDivElement>(null); // 채팅창 맨 밑으로 스크롤 내리기
-  const nickname = window.localStorage.getItem('nickname');
+
+  // 스크롤 구현을 위한 상태
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const userScrolledRef = useRef<boolean>(false);
+  const [userScrolled, setUserScrolled] = useState<boolean>(false);
 
   const sendChat = () => {
     if (String(inputTextRef.current).trim() === '') {
@@ -54,8 +59,40 @@ export const MultiGameChatting = (props: OwnProps) => {
     setInputText('');
   };
 
+  // 사용자가 수동으로 스크롤을 조작한 경우 상태 업데이트
+  const handleScroll = () => {
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      if (
+        chatContainer.scrollTop + chatContainer.clientHeight <
+        chatContainer.scrollHeight - 60
+      ) {
+        userScrolledRef.current = true;
+        setUserScrolled(true);
+      } else {
+        userScrolledRef.current = false;
+        setUserScrolled(false);
+      }
+    }
+  };
+
+  // useEffect를 사용하여 스크롤 이벤트 리스너 등록
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (chatContainer) {
+        chatContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!userScrolledRef.current) {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [gameChatList]); // lobbyChatList가 변경될 때마다 스크롤 조정(맨 아래로)
 
   useEffect(() => {
@@ -84,14 +121,27 @@ export const MultiGameChatting = (props: OwnProps) => {
     window.addEventListener('keydown', handleKeyDown);
   }, []);
 
+  const DownRecentChatBtnHandler = () => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <S.Container
       onClick={() => {
         inputFocusRef.current = false;
       }}
     >
+      {userScrolled ? (
+        <DownRecentChatBtn
+          clickHandler={DownRecentChatBtnHandler}
+          bgColor="rgba(217, 217, 217, 0.4)"
+          hoverColor="rgba(29, 29, 29, 1)"
+        />
+      ) : (
+        ''
+      )}
       <MultiSkipBox skipVote={skipVote} userLength={userLength} />
-      <S.ChatListContainer>
+      <S.ChatListContainer ref={chatContainerRef}>
         {gameChatList.map((chat, index) => (
           <S.NicknameColor
             // eslint-disable-next-line react/no-array-index-key

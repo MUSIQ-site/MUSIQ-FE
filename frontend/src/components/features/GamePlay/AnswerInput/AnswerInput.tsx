@@ -115,8 +115,8 @@ export const AnswerInput = (props: OwnProps) => {
             inputTextRef.current = e.target.value;
           }}
           ref={focusRef}
-          disabled={isJudge || isCorrect || isLose || tryCntRef.current <= 0}
-          readOnly={isJudge || isCorrect || isLose || tryCntRef.current <= 0}
+          disabled={isJudge || tryCntRef.current <= 0}
+          readOnly={isJudge || tryCntRef.current <= 0}
         />
       </InputStyle>
       <p className="explainKey">enter 키로 활성화, enter키로 정답 제출</p>
