@@ -173,7 +173,11 @@ export const LobbyChatting = (props: OwnProps) => {
             }
           }}
           onKeyPress={(e) => {
-            if (e.key === 'Enter' && !chatDisabled) {
+            if (
+              e.key === 'Enter' &&
+              !chatDisabled &&
+              lobbyInputMessage !== ''
+            ) {
               sendMessage();
             }
           }}
