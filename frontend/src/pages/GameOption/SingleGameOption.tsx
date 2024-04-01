@@ -79,9 +79,11 @@ export const SingleGameOption = () => {
 
       setLevelList({
         // 난이도에 따라 동적으로 time 할당
-        title: mode,
+        title: mode.toLowerCase(),
         select: true,
-        time: timeMapping[mode as 'easy' | 'normal' | 'hard' | 'crazy'],
+        time: timeMapping[
+          mode.toLowerCase() as 'easy' | 'normal' | 'hard' | 'crazy'
+        ],
       });
     }
   }, []);

@@ -56,8 +56,28 @@ export const Notification = () => {
               </p>
             </S.TopContainer>
             <S.ContentContainer>
-              <h2>{version} 업데이트 내역</h2>
-              <p>{content}</p>
+              <h2>{version} 업데이트</h2>
+              <ul>
+                <h3>테마 부문</h3>
+                <li>
+                  봄 분위기에 맞는 UI 로 업데이트 하였습니다, 게임을
+                  플레이하면서 직접 확인해보세요!
+                </li>
+                <li>
+                  채팅창 스크롤을 위로 올리면 채팅 내용이 고정되게
+                  수정하였습니다.
+                </li>
+                <li>
+                  업데이트 및 버그 수정 내역 알림을 위한 알림창 추가하였습니다.
+                </li>
+              </ul>
+              <br />
+              <ul>
+                <h3>게임 부문</h3>
+                <li>게임 방 최대 인원 수 1~10명 사이 변경 가능</li>
+                <li>게임 대기중일 상태에만 변경 가능합니다</li>
+                <li>싱글모드 기존에 하던 플레이 이어하기가 가능합니다</li>
+              </ul>
             </S.ContentContainer>
             <S.CheckBoxInput>
               <input

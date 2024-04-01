@@ -54,8 +54,23 @@ export const ContentContainer = styled.div`
   box-shadow: 2px 4px 6px 5px rgba(217, 217, 217, 1);
 
   & h2 {
+    font-family: 'Galmuri11', 'sans-serif';
     font-size: 1.5rem;
     font-weight: bold;
+    text-align: center;
+  }
+
+  & h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  & ul {
+    padding-left: 1rem;
+  }
+
+  & li {
+    list-style: circle;
   }
 `;
 
