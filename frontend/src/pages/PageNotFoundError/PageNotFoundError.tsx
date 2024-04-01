@@ -5,7 +5,7 @@ import {
   StyledBg,
 } from './PageNotFoundError.styled';
 import Error404Message from '../../assets/svgs/Error404Message.svg';
-import waterBG from '../../assets/img/background/waterBackground.gif';
+import waterBG from '../../assets/img/background/waterBackground.webp';
 
 export const PageNotFoundError = () => {
   const navigate = useNavigate();
