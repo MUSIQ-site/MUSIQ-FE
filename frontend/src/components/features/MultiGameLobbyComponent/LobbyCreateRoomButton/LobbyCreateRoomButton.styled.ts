@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ButtonsWrapper = styled.div`
-  width: 10vw;
-  height: 11vh;
+  width: 13rem;
+  height: 7rem;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;

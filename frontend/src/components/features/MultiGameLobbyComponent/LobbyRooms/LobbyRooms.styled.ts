@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const RoomsWrapper = styled.div`
-  width: 62rem;
-  height: 27rem;
+  width: 79rem;
+  height: 34rem;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
   border-radius: 30px;
@@ -17,10 +17,10 @@ export const RoomsWrapper = styled.div`
 `;
 
 export const Room = styled.button`
-  width: 30rem;
-  height: 8rem;
+  width: 38rem;
+  height: 10rem;
   padding: 1rem;
-  margin: 4px;
+  margin: 6px;
   border: 1px solid #ccc;
   border-radius: 15px;
   display: flex;

@@ -22,7 +22,6 @@ interface Room {
   roomTitle: string;
   years: number[];
   quizAmount: number;
-  // 여기에 Room 객체의 다른 속성들을 추가하세요.
 }
 
 interface SearchRoomButtonProps {
