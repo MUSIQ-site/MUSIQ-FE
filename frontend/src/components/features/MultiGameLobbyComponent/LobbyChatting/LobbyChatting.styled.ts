@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ChattingWrapper = styled.div`
-  width: 102rem;
+  width: 75vw;
   height: 23rem;
   flex-shrink: 0;
   border: solid 5px rgba(235, 226, 255, 0.4);
@@ -13,11 +13,11 @@ export const ChattingWrapper = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
   top: 60%;
-  left: 21%;
+  right: 4%;
 `;
 
 export const ChattingContentsWrapper = styled.div`
-  width: 100rem;
+  width: 73vw;
   height: 18rem;
   border: solid 5px rgba(235, 226, 255, 0.2);
   border-radius: 15px;
@@ -35,17 +35,18 @@ export const ChattingContentsWrapper = styled.div`
 `;
 
 export const ChattingContent = styled.div`
-  width: 98rem;
+  width: 75vw;
   padding: 1%;
 `;
 
 export const ChattingInputWrapper = styled.div`
-  width: 100rem;
+  width: 100%;
   height: 2rem;
   display: flex;
   align-items: center;
   flex-direction: row;
   margin-top: 0.8%;
+  margin-left: 2%;
 `;
 
 export const StyledInput = styled.input`
