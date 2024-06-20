@@ -11,3 +11,4 @@ export * from './MultiGameLobby';
 export * from './PageNotFoundError';
 export * from './MultiChannelPage';
 export * from './MultiGamePlaying';
+export * from './Admin';
