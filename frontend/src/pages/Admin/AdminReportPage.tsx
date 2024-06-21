@@ -12,9 +12,11 @@ type AdminBoardPost = {
 };
 
 export const AdminReportPage = () => {
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [posts, setPosts] = useState<AdminBoardPost[]>([]);
+  const [totalBoardCnt, setTotalBoardCnt] = useState(0);
 
   const fetchList = () => {
     axios
@@ -39,7 +41,16 @@ export const AdminReportPage = () => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         posts={dataSource}
+        loading={loading}
       />
+      <button
+        type="button"
+        onClick={() => {
+          fetchList();
+        }}
+      >
+        조회
+      </button>
     </S.Container>
   );
 };

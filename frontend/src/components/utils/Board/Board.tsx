@@ -1,4 +1,4 @@
-import { Table, Pagination } from 'antd';
+import { Table, Pagination, Spin } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
 
 const columns = [
@@ -31,6 +31,7 @@ type Props = {
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
   posts: AdminBoardPost[];
+  loading: boolean;
 };
 
 export const Board = ({
@@ -39,10 +40,10 @@ export const Board = ({
   pageSize,
   setPageSize,
   posts,
+  loading
 }: Props) => {
-  const handlePageChange = (page: number, size: number) => {
+  const handlePageChange = (page: React.SetStateAction<number>) => {
     setCurrentPage(page);
-    setPageSize(size);
   };
 
   const paginatedData = posts.slice(
@@ -50,17 +51,31 @@ export const Board = ({
     currentPage * pageSize
   );
 
+  const locale = {
+    emptyText: "조회결과가 없습니다."
+  }
+
   return (
     <div>
-      <Table dataSource={paginatedData} columns={columns} pagination={false} />
+      <Table
+        dataSource={paginatedData}
+        rowKey={(row, idx) => idx}
+        columns={columns}
+        pagination={false}
+        locale={locale}
+        loading={
+          loading ? {
+            indicator: (<div><Spin/></div>)
+          }
+        }
+        pagination={{pageSize: pageSize, hideOnSinglePage: true, showSizeChanger: false}}
+      />
       <Pagination
         current={currentPage}
         pageSize={pageSize}
         total={posts.length}
         onChange={handlePageChange}
         showSizeChanger
-        onShowSizeChange={handlePageChange}
-        pageSizeOptions={['10', '30', '50']}
       />
     </div>
   );
