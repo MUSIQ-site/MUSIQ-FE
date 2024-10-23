@@ -12,6 +12,7 @@ const yearLists = [
   '2021',
   '2022',
   '2023',
+  '2024',
 ];
 
 const renderYearList = [
@@ -25,6 +26,7 @@ const renderYearList = [
   '2021년',
   '2022년',
   '2023년',
+  '2024년',
 ];
 
 type OwnProps = {
