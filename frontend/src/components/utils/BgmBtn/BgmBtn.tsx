@@ -42,7 +42,7 @@ export const BgmBtn = () => {
   return (
     <Container>
       <audio ref={audioRef} loop>
-        <source src="/assets/bgm/videoplayback.m4a" type="audio/mp4" />
+        <source src="/assets/bgm/christmas.mp3" type="audio/mp4" />
         <track kind="captions" />
       </audio>
       {isLoginRoute ? <LoginRouterBtn isLogin={isLogin} /> : ''}
