@@ -60,6 +60,7 @@ const LobbyCreateRoomModal: React.FC<CreateRoomModalProps> = ({
     '2021',
     '2022',
     '2023',
+    '2024',
   ];
   const [maxUserNumber, setMaxUserNumber] = useState(1);
 
