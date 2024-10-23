@@ -58,6 +58,7 @@ export const ContentContainer = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
+    margin-bottom: 20px;
   }
 
   & h3 {

@@ -31,6 +31,7 @@ const yearsOptions = [
   '2021',
   '2022',
   '2023',
+  '2024',
 ];
 
 const quizAmountList = [3, 10, 20, 30];

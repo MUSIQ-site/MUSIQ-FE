@@ -3,7 +3,7 @@ import reset from 'styled-reset';
 import cursorIcon from '../assets/img/cursor.png';
 import hoverCursorIcon from '../assets/img/hoverCursorIcon.png';
 import backgroundGif1 from '../assets/img/background/backgroundGif1.gif';
-import backgroundGif2 from '../assets/img/background/waterBackground.webp';
+import backgroundGif2 from '../assets/img/background/waterBackground.gif';
 
 const GlobalStyles = createGlobalStyle`
     :root {
